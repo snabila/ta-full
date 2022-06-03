@@ -1,0 +1,11 @@
+.DS_Store
+node_modules
+frontend/build
+frontend/.svelte-kit
+frontend/package
+.env
+.env.*
+!.env.example
+/service-*/env
+**/__pycache__
+/service-questionare-db
