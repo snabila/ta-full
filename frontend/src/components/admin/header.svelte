@@ -37,9 +37,9 @@
 	});
 </script>
 
-<header class="z-10 py-4">
+<header class="z-10 md:py-4 py-3">
 	<div
-		class="container flex items-center justify-between h-full py-4 px-6 mx-auto text-neutral-600 dark:text-neutral-300"
+		class="container flex items-center justify-between h-full md:py-4 py-0 px-6 mx-auto text-neutral-600 dark:text-neutral-300"
 	>
 		<!-- Title and Mobile menu -->
 		<div class="inline-flex items-center">

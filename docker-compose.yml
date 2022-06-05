@@ -1,5 +1,15 @@
 version: "3.8"
 services:
+  gateway:
+    image: devopsfaith/krakend:2.0.4
+    volumes:
+      - ./gateway:/etc/krakend
+    ports:
+      - 8080:8080
+    depends_on:
+      - service-questionare
+      - service-heart-es
+
   service-questionare:
     build:
       context: ./service-questionare
