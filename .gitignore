@@ -9,3 +9,5 @@ frontend/package
 /service-*/env
 **/__pycache__
 /service-questionare-db
+.vscode
+**/venv
