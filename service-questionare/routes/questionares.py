@@ -21,14 +21,14 @@ from db.models import (
 router = APIRouter()
 
 # Add new questionare
-@router.post("/", response_description="New questionare added into the database")
+@router.post("", response_description="New questionare added into the database")
 async def add_questionare(questionare: Questionare):
     questionare = jsonable_encoder(questionare)
     new_questionare = await add_q(questionare)
     return ResponseModel(new_questionare, "Questionare added successfully.")
 
 # Get all questionares
-@router.get("/", response_description="Questionares retrieved")
+@router.get("", response_description="Questionares retrieved")
 async def get_questionares():
     questionares = await retrieve_qs()
     if questionares:

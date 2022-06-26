@@ -15,6 +15,7 @@ class Questionare(BaseModel):
     code : str
     notif : bool
     questions : List[QuestionareFields]
+    participants : Optional[List[str]] = None
 
 class UpdateQuestionare(BaseModel):
     name : Optional[str]
@@ -23,6 +24,7 @@ class UpdateQuestionare(BaseModel):
     code : Optional[str]
     notif : Optional[bool]
     questions : Optional[List[QuestionareFields]]
+    participants : Optional[List[str]]
 
 class AnswerFields(BaseModel):
     q_id : int

@@ -1,16 +1,22 @@
+import config
 import motor.motor_asyncio
+import pymongo
 from bson.objectid import ObjectId
 
-MONGO_DETAILS = "mongodb://mongo_user:mongo_password@service-questionare-db:27017" 
+settings = config.Settings()
 
-client = motor.motor_asyncio.AsyncIOMotorClient(MONGO_DETAILS)
+client = motor.motor_asyncio.AsyncIOMotorClient(settings.DB_URL)
 
 database = client.qs
 
+# monitoring data
 qs_collection = database.get_collection("qs_collection")
+
+# record data
 rs_collection = database.get_collection("rs_collection")
 
 # Helpers
+# # Monitoring helper
 def q_helper(q) -> dict:
     return {
         "id": str(q["_id"]),
@@ -19,12 +25,23 @@ def q_helper(q) -> dict:
         "host" : q["host"],
         "code" : q["code"],
         "notif" : q["notif"],
-        "questions" : q["questions"]
+        "questions" : q["questions"],
+        "participants" : q["participants"]
     }
 
 def questions_helper(q) -> dict:
     return {
         "questions" : q["questions"]
+    }
+
+# # Record helper
+def r_helper(q) -> dict:
+    return {
+        "id": str(q["_id"]),
+        "user": q["user"],
+        "qs_code": q["qs_code"],
+        "submit_time": q["submit_time"],
+        "answers": q["answers"]
     }
 
 ####################
@@ -41,7 +58,7 @@ async def retrieve_qs():
 # Add a new questionare into to the database
 async def add_q(q_data: dict) -> dict:
     q = await qs_collection.insert_one(q_data)
-    new_q = await qs_collection.find_one({"code": q.code})
+    new_q = await qs_collection.find_one({"code": q_data["code"]})
     return q_helper(new_q)
 
 
@@ -87,5 +104,27 @@ async def delete_q(code: str):
 
 # Add new record
 async def add_rec(answer_data: dict) -> dict:
-    rec = await rs_collection.insert_one()
-    return questions_helper(rec)
+    rec = await rs_collection.insert_one(answer_data)
+    new_req = await rs_collection.find_one(sort=[( '_id', pymongo.DESCENDING )])
+    return r_helper(new_req)
+
+# Get all records
+async def get_recs():
+    rs = []
+    async for r in rs_collection.find():
+        rs.append(r_helper(r))
+    return rs
+
+# Filter records by monitoring code
+async def rec_by_code(code: str) -> dict:
+    rs = []
+    async for r in rs_collection.find({"qs_code": code}):
+        rs.append(r_helper(r))
+    return rs
+
+# Filter by code and username
+async def rec_code_uname(code, uname: str) -> dict:
+    rs = []
+    async for r in rs_collection.find({"qs_code": code, "user": uname}):
+        rs.append(r_helper(r))
+    return rs

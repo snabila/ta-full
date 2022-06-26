@@ -9,7 +9,7 @@ app = FastAPI()
 
 @app.get("/", tags=["Root"])
 async def read_root():
-    return {"message": "Heart Disease Expert System Service API"}
+    return {"message": "Expert System Service API"}
 
 
 # # Covid Expert System

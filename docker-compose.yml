@@ -1,16 +1,30 @@
 version: "3.8"
 services:
+  frontend:
+    restart: on-failure
+    build:
+      context: ./frontend
+    volumes:
+      - ./frontend:/code
+    ports:
+      - 3000:3000
+      - 24678:24678
+    environment:
+      NODE_ENV: development
+
   gateway:
     image: devopsfaith/krakend:2.0.4
     volumes:
       - ./gateway:/etc/krakend
     ports:
       - 8080:8080
+    command: ["run", "-d", "-c", "/etc/krakend/krakend.json"]
     depends_on:
-      - service-questionare
-      - service-heart-es
+      - service-monitoring
+      - service-es
+      - service-user
 
-  service-questionare:
+  service-monitoring:
     build:
       context: ./service-questionare
     volumes:
@@ -18,23 +32,57 @@ services:
     ports:
       - 8000:8000
     depends_on:
-      - service-questionare-db
+      - service-monitoring-db
 
-  service-questionare-db:
+  service-monitoring-db:
     image: mongo
     restart: always
     environment:
-      MONGO_INITDB_ROOT_USERNAME: mongo_user
-      MONGO_INITDB_ROOT_PASSWORD: mongo_password
+      MONGO_INITDB_ROOT_USERNAME: ${MONITORING_DB_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONITORING_DB_PASSWORD}
     volumes:
       - ./service-questionare-db:/data/db
     ports:
       - 27017:27017 # remove this line on prod
 
-  service-heart-es:
+  service-es:
     build:
       context: ./service-heart-es
     volumes:
       - ./service-heart-es:/code
     ports:
       - 8001:8001
+
+  service-disease-info:
+    build:
+      context: ./service-disease-info
+    volumes:
+      - ./service-disease-info:/code
+    ports:
+      - 8002:8002
+
+  service-user:
+    build:
+      context: ./service-user-authentication
+      target: dev
+    volumes:
+      - ./service-user-authentication:/code
+    ports:
+      - 8003:8003
+    environment:
+      NODE_ENV: development
+      DEBUG: nodejs-docker-express:*
+    depends_on:
+      - service-user-db
+
+  service-user-db:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${USER_DB_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${USER_DB_PASSWORD}
+    volumes:
+      - ./service-user-db:/data/db
+    ports:
+      - 27018:27018
+    command: mongod --port 27018 --bind_ip_all

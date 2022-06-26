@@ -1,5 +1,5 @@
 <script>
-	import { pageName } from '../../routes/admin/stores.js';
+	import { pageName } from '../../stores/admin.js';
 
 	import { onMount } from 'svelte';
 

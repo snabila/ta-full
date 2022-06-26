@@ -1,13 +1,26 @@
-.DS_Store
-node_modules
-frontend/build
-frontend/.svelte-kit
-frontend/package
+# Environment files
 .env
 .env.*
 !.env.example
+
+# Database
+/service-questionare-db
+/service-user-db
+.db
+
+# Node
+node_modules
+
+# Frontend
+frontend/build
+frontend/.svelte-kit
+frontend/package
+
+# Python
+**/venv
 /service-*/env
 **/__pycache__
-/service-questionare-db
+
+# Other
 .vscode
-**/venv
+.DS_Store

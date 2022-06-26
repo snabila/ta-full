@@ -1,10 +1,31 @@
 <script>
 	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
+	import { env } from '$lib/env' 
+	import { pageName } from '../../../stores/admin.js';
 
-	import { pageName } from '../stores';
+	let data, uname
 
-	onMount(() => {
+	onMount(async () => {
 		pageName.update(() => document.title);
+
+		try {
+			const response = await fetch(env.GATE + '/auth/user', {
+				headers: {'Content-Type': 'application/json'},
+				credentials: 'include',
+			})
+			const content = await response.json()
+			data = content
+			uname = content.username
+
+			if (response.status == 401) {
+				goto('/')
+			} else {
+				console.log(content)
+			}
+		} catch (error) {
+			goto('/login')
+		}
 	});
 </script>
 

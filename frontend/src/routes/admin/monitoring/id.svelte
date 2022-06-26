@@ -1,7 +1,7 @@
 <script>
 	import { onMount } from 'svelte';
 
-	import { pageName } from '../stores';
+	import { pageName } from '../../../stores/admin.js';
 
 	onMount(() => {
 		pageName.update(() => document.title);

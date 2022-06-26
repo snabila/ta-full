@@ -1,15 +1,36 @@
 <script>
 	import { onMount } from 'svelte';
-	import { pageName, storeFields } from '../stores.js';
+	import { goto } from '$app/navigation';
+	import { pageName, storeFields } from '../../../stores/admin.js';
 	import fieldItem from '../../../components/admin/fieldItem.svelte';
 
+	let data, uname
+
 	// Update page title on header
-	onMount(() => {
+	onMount(async () => {
 		pageName.update(() => document.title);
+
+		try {
+			const response = await fetch('http://localhost:8080/auth/user', {
+				headers: {'Content-Type': 'application/json'},
+				credentials: 'include',
+			})
+			const content = await response.json()
+			data = content
+			uname = content.username
+
+			if (response.status == 401) {
+				goto('/')
+			} else {
+				console.log(content)
+			}
+		} catch (error) {
+			goto('/')
+		}
 	});
 
 	// Monitoring form fields
-	$storeFields = [{ id: 1, label: '', quest: '', type: '1' }]; // load from stores
+	$storeFields = [{ id: 1, label: '', question: '', answer_type: '1' }]; // load from stores
 
 	function addMoreField() {
 		// add new field
@@ -20,6 +41,34 @@
 
 	// munculin menu reminder
 	let timeMenu;
+
+	let formData = {
+		"name": "",
+		"desc": "",
+		"code": "",
+		"notif": false,
+	}
+
+	// save monitoring
+	const submit = async () => {
+		const response = await fetch('http://localhost:8080/monit/new', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                "name": formData.name,
+                "host": uname,
+                "desc": formData.desc,
+                "code": uname + '-' + formData.code,
+				"notif": formData.notif,
+				"questions": $storeFields
+            })
+        })
+		// formData.questions = $storeFields
+		// formData.host = uname
+		// formData.code = uname + '-' + formData.code
+		// console.log(response)
+		await goto('/admin/monitoring')
+	}
 </script>
 
 <svelte:head>
@@ -28,6 +77,7 @@
 
 <!-- <svelte:window on:beforeunload={beforeUnload} /> -->
 
+<form action="" on:submit|preventDefault={submit}>
 <!-- Upper section -->
 <div class="grid gap-6 mb-8 md:grid-cols-3 xl:grid-cols-3">
 	<!-- Left : Details -->
@@ -42,18 +92,22 @@
 					placeholder="Monitoring General"
 					type="text"
 					id="name"
+					bind:value={formData.name}
+					required
 				/>
 			</div>
 
 			<!-- Kode Form -->
 			<div class="mb-7">
 				<label class="block text-sm mb-3 font-semibold" for="code"> Kode </label>
-				username-
+				{uname} - 
 				<input
 					class="mt-1 text-sm border rounded-md dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none dark:text-gray-300 form-input py-2 px-3"
 					placeholder="Kode form"
 					type="text"
 					id="code"
+					bind:value={formData.code}
+					required
 				/>
 			</div>
 
@@ -66,6 +120,7 @@
 					rows="10"
 					class="block w-full mt-1 text-sm border rounded-md dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none dark:text-gray-300 form-input py-2 px-3"
 					placeholder="Deskripsi"
+					bind:value={formData.desc}
 				/>
 			</div>
 		</div>
@@ -105,6 +160,13 @@
 				<label class="block text-sm font-semibold" for="openJoin">Open join</label>
 				<input class="h-5 w-5 accent-purple-600" type="checkbox" id="openJoin" />
 			</div>
+
+			<button type="submit"
+				class="mt-6 flex justify-center w-full px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
+				
+			>
+				Simpan
+			</button>
 		</div>
 	</div>
 </div>
@@ -126,3 +188,4 @@
 		<svelte:component this={fieldItem} objAttributes={item} />
 	{/each}
 </div>
+</form>

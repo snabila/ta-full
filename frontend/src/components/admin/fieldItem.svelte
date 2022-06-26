@@ -1,6 +1,6 @@
 <script>
 	import { fade } from 'svelte/transition';
-	import { storeFields } from '../../routes/admin/stores.js';
+	import { storeFields } from '../../stores/admin.js';
 	export let objAttributes = {};
 	//export let store;
 
@@ -58,6 +58,7 @@
 			type="text"
 			id="field-{objAttributes.id}-name"
 			bind:value={objAttributes.label}
+			required
 		/>
 	</div>
 
@@ -69,7 +70,7 @@
 		<select
 			id="field-{objAttributes.id}-type"
 			class="block mt-1 text-sm border rounded-md bg-white dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none dark:text-gray-300 form-input py-2 px-2"
-			bind:value={objAttributes.type}
+			bind:value={objAttributes.answer_type}
 		>
 			<option value="1">Teks pendek</option>
 			<option value="2">Numerik</option>
@@ -87,7 +88,8 @@
 			placeholder="Berapa suhu anda hari ini?"
 			type="text"
 			id="field-{objAttributes.id}-quest"
-			bind:value={objAttributes.quest}
+			bind:value={objAttributes.question}
+			required
 		/>
 	</div>
 </div>
