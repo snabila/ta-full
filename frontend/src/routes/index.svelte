@@ -151,7 +151,7 @@
 
 						{:else}
 						<input
-							class="px-3 py-3 rounded-md w-full bg-white focus:ring-violet-100 focus:ring-4 transition focus-visible:outline-none"
+							class="px-3 py-3 rounded-md w-full bg-white focus:ring-violet-100 focus:ring-4 transition focus-visible:outline-none border-2 border-purple-600"
 							type="text"
 							name="pesan"
 							id="pesan"
@@ -166,7 +166,12 @@
 						{/if}
 					</form>
 				</div>
+				<div class="rounded-md bg-violet-100 px-1 py-2 text-center text-sm text-violet-500">
+					<p>Ketikkan <code>`fungsi`</code> untuk melihat daftar fungsi chatbot</p>
+				</div>
 			</div>
+
+			
 
 			<MsgList />
 		</main>

@@ -45,7 +45,7 @@ Yang masih problem:
 
 Pakai Rasa Framework, masih belom dimasukkin docker, jadi run sendiri pake:
 
-    rasa run --enable-api --cors="*" --port 5005 debug
+    rasa run --enable-api --cors="*" --port 5005 --debug
 
 Buat jalanin actions server:
 
