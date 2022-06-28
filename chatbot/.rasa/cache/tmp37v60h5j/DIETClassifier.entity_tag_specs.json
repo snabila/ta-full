@@ -1,0 +1,36 @@
+[
+  {
+    "tag_name": "entity",
+    "ids_to_tags": {
+      "1": "B-dicari",
+      "2": "I-dicari",
+      "3": "L-dicari",
+      "4": "U-dicari",
+      "5": "B-monitoring_form",
+      "6": "I-monitoring_form",
+      "7": "L-monitoring_form",
+      "8": "U-monitoring_form",
+      "9": "B-penyakit",
+      "10": "I-penyakit",
+      "11": "L-penyakit",
+      "12": "U-penyakit",
+      "0": "O"
+    },
+    "tags_to_ids": {
+      "B-dicari": 1,
+      "I-dicari": 2,
+      "L-dicari": 3,
+      "U-dicari": 4,
+      "B-monitoring_form": 5,
+      "I-monitoring_form": 6,
+      "L-monitoring_form": 7,
+      "U-monitoring_form": 8,
+      "B-penyakit": 9,
+      "I-penyakit": 10,
+      "L-penyakit": 11,
+      "U-penyakit": 12,
+      "O": 0
+    },
+    "num_tags": 13
+  }
+]

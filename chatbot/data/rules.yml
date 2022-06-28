@@ -1,0 +1,140 @@
+version: "3.1"
+
+rules:
+  # sapaan
+  - rule: sapaan
+    steps:
+      - intent: greet
+      - action: utter_greet
+
+  - rule: list fungsi
+    steps:
+      - intent: fungsi_bot
+      - action: utter_fungsi
+
+  # bantu lagi
+  - rule: bantu lagi - yes - fungsi
+    steps:
+      - action: utter_bantu_lagi
+      - intent: affirm
+      - action: utter_fungsi
+
+  - rule: bantu lagi - no - feedback
+    steps:
+      - action: utter_bantu_lagi
+      - intent: deny
+      - action: utter_feedback_positif
+
+  # feedback
+  - rule: fungsi feedback
+    steps:
+      - action: utter_fungsi
+      - intent: pilih_feedback
+      - action: utter_feedback
+
+  - rule: greet feedback
+    steps:
+      - action: utter_greet
+      - intent: pilih_feedback
+      - action: utter_feedback
+
+  # expert system
+  - rule: fungsi es
+    steps:
+      - action: utter_fungsi
+      - intent: pilih_es
+      - action: utter_es
+
+  - rule: greet es
+    steps:
+      - action: utter_greet
+      - intent: pilih_es
+      - action: utter_es
+
+  # # isi es
+  - rule: isi es
+    steps:
+      - action: utter_es
+      - intent: pilih_es_covid
+      - action: es_covid_form
+      - active_loop: es_covid_form
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: action_es_covid
+      - action: utter_bantu_lagi
+
+  # monitoring
+  - rule: fungsi monit
+    steps:
+      - action: utter_fungsi
+      - intent: pilih_monitoring
+      - action: utter_monit
+
+  - rule: greet monit
+    steps:
+      - action: utter_greet
+      - intent: pilih_monitoring
+      - action: utter_monit
+
+  # # monit daftar
+  - rule: monit daftar
+    steps:
+      - action: utter_monit
+      - intent: monit_pilih_daftar
+      - action: monit_form
+      - active_loop: monit_form
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: action_monit_daftar
+      - action: utter_bantu_lagi
+
+  # # monit hapus
+  - rule: monit hapus
+    steps:
+      - action: utter_monit
+      - intent: monit_pilih_hapus
+      - action: action_monit_hapus_list
+      - action: monit_form
+      - active_loop: monit_form
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: action_monit_hapus_act
+      - action: utter_bantu_lagi
+
+  # disease info
+  - rule: greet disease
+    steps:
+      - action: utter_greet
+      - intent: pilih_disease_info
+      - action: disease_info_form
+      - active_loop: disease_info_form
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: action_disease_info
+      - action: apakah_membantu_form
+      - active_loop: apakah_membantu_form
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: action_opini_bantu
+
+  - rule: disease info
+    steps:
+      - action: utter_fungsi
+      - intent: pilih_disease_info
+      - action: disease_info_form
+      - active_loop: disease_info_form
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: action_disease_info
+      - action: apakah_membantu_form
+      - active_loop: apakah_membantu_form
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: action_opini_bantu

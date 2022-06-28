@@ -1,16 +1,16 @@
 <script>
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
-	import { env } from '$lib/env' 
 	import { pageName } from '../../../stores/admin.js';
 
 	let data, uname
+	let data2 = []
 
 	onMount(async () => {
 		pageName.update(() => document.title);
 
 		try {
-			const response = await fetch(env.GATE + '/auth/user', {
+			const response = await fetch('http://localhost:8080/auth/user', {
 				headers: {'Content-Type': 'application/json'},
 				credentials: 'include',
 			})
@@ -21,7 +21,20 @@
 			if (response.status == 401) {
 				goto('/')
 			} else {
-				console.log(content)
+				console.log(content.hosting)
+				let codes = content.hosting
+				let codeslen = codes.length
+				for (let i = 0; i < codeslen; i++) {
+					let datakode = await fetch('http://localhost:8080/monit/code/' + codes[i], {
+						headers: {'Content-Type': 'application/json'},
+						credentials: 'include',
+					})
+					data2.push(await datakode.json())
+					// data2 = await datakode.json()
+					console.log(data2)
+				}
+				console.log(data2[0]['data'][0]['name'])
+
 			}
 		} catch (error) {
 			goto('/login')
@@ -46,6 +59,22 @@
 					<th class="px-4 py-3">Edit Terakhir</th>
 				</tr>
 			</thead>
+			{#each data2 as input}
+				<tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
+				<tr class="text-gray-700 dark:text-gray-400">
+					<td class="px-4 py-5">
+						<div class="flex items-center text-sm">
+							<div>
+								<a href="/admin/monitoring/id"><p class="font-semibold">{ input['data'][0]['name'] }</p></a>
+							</div>
+						</div>
+					</td>
+					<td class="px-4 py-5 text-sm"></td>
+					<td class="px-4 py-5 text-sm"></td>
+					<td class="px-4 py-5 text-sm"></td>
+				</tr>
+			</tbody>
+			{/each }
 			<tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
 				<tr class="text-gray-700 dark:text-gray-400">
 					<td class="px-4 py-5">

@@ -1,0 +1,47 @@
+{
+  "lookup": {
+    "rules": {
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"fungsi_bot\"}}]": "utter_fungsi",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"fungsi_bot\"}}, {\"prev_action\": {\"action_name\": \"utter_fungsi\"}, \"user\": {\"intent\": \"fungsi_bot\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"greet\"}}]": "utter_greet",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"greet\"}}, {\"prev_action\": {\"action_name\": \"utter_greet\"}, \"user\": {\"intent\": \"greet\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"utter_fungsi\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"utter_fungsi\"}}, {\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"pilih_feedback\"}}]": "utter_feedback",
+      "[{\"prev_action\": {\"action_name\": \"utter_fungsi\"}}, {\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"pilih_feedback\"}}, {\"prev_action\": {\"action_name\": \"utter_feedback\"}, \"user\": {\"intent\": \"pilih_feedback\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"utter_fungsi\"}}, {\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"pilih_monitoring\"}}]": "utter_monit",
+      "[{\"prev_action\": {\"action_name\": \"utter_fungsi\"}}, {\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"pilih_monitoring\"}}, {\"prev_action\": {\"action_name\": \"utter_monit\"}, \"user\": {\"intent\": \"pilih_monitoring\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"utter_fungsi\"}}, {\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"pilih_es\"}}]": "utter_es",
+      "[{\"prev_action\": {\"action_name\": \"utter_fungsi\"}}, {\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"pilih_es\"}}, {\"prev_action\": {\"action_name\": \"utter_es\"}, \"user\": {\"intent\": \"pilih_es\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"utter_monit\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"utter_monit\"}}, {\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"monit_pilih_daftar\"}}]": "monit_form",
+      "[{\"prev_action\": {\"action_name\": \"utter_monit\"}}, {\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"monit_pilih_daftar\"}}, {\"active_loop\": {\"name\": \"should_not_be_set\"}, \"prev_action\": {\"action_name\": \"monit_form\"}, \"user\": {\"intent\": \"monit_pilih_daftar\"}}]": "utter_kode_test",
+      "[{\"prev_action\": {\"action_name\": \"utter_monit\"}}, {\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"monit_pilih_daftar\"}}, {\"active_loop\": {\"name\": \"should_not_be_set\"}, \"prev_action\": {\"action_name\": \"monit_form\"}, \"user\": {\"intent\": \"monit_pilih_daftar\"}}, {\"active_loop\": {\"name\": \"should_not_be_set\"}, \"prev_action\": {\"action_name\": \"utter_kode_test\"}, \"user\": {\"intent\": \"monit_pilih_daftar\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"utter_greet\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"utter_greet\"}}, {\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"pilih_feedback\"}}]": "utter_feedback",
+      "[{\"prev_action\": {\"action_name\": \"utter_greet\"}}, {\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"pilih_feedback\"}}, {\"prev_action\": {\"action_name\": \"utter_feedback\"}, \"user\": {\"intent\": \"pilih_feedback\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"utter_greet\"}}, {\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"pilih_es\"}}]": "utter_es",
+      "[{\"prev_action\": {\"action_name\": \"utter_greet\"}}, {\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"pilih_es\"}}, {\"prev_action\": {\"action_name\": \"utter_es\"}, \"user\": {\"intent\": \"pilih_es\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"utter_greet\"}}, {\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"pilih_monitoring\"}}]": "utter_monit",
+      "[{\"prev_action\": {\"action_name\": \"utter_greet\"}}, {\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"pilih_monitoring\"}}, {\"prev_action\": {\"action_name\": \"utter_monit\"}, \"user\": {\"intent\": \"pilih_monitoring\"}}]": "action_listen"
+    },
+    "rule_only_slots": [],
+    "rule_only_loops": [],
+    "rules_for_loop_unhappy_path": {},
+    "rules_not_in_stories": [
+      "[{\"prev_action\": {\"action_name\": \"utter_greet\"}}, {\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"pilih_es\"}}]",
+      "predicting default action with intent restart",
+      "[{\"prev_action\": {\"action_name\": \"utter_greet\"}}, {\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"pilih_feedback\"}}]",
+      "handling active loops and forms - monit_form - action_listen",
+      "handling active loops and forms - disease_info_form - action_listen",
+      "[{\"prev_action\": {\"action_name\": \"utter_greet\"}}, {\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"pilih_feedback\"}}, {\"prev_action\": {\"action_name\": \"utter_feedback\"}, \"user\": {\"intent\": \"pilih_feedback\"}}]",
+      "[{\"prev_action\": {\"action_name\": \"utter_greet\"}}, {\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"pilih_es\"}}, {\"prev_action\": {\"action_name\": \"utter_es\"}, \"user\": {\"intent\": \"pilih_es\"}}]",
+      "[{\"prev_action\": {\"action_name\": \"utter_monit\"}}]",
+      "handling active loops and forms - disease_info_form",
+      "handling active loops and forms - monit_form",
+      "[{\"prev_action\": {\"action_name\": \"utter_fungsi\"}}]",
+      "[{\"prev_action\": {\"action_name\": \"utter_greet\"}}]",
+      "predicting default action with intent back",
+      "predicting default action with intent session_start"
+    ]
+  }
+}

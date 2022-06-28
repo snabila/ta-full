@@ -1,0 +1,137 @@
+version: "3.1"
+
+nlu:
+  - intent: greet
+    examples: |
+      - hey
+      - hello
+      - hi
+      - hello there
+      - good morning
+      - good evening
+      - moin
+      - hey there
+      - let's go
+      - hey dude
+      - goodmorning
+      - goodevening
+      - good afternoon
+      - goodafternoon
+      - halo
+      - hai
+      - hei
+      - selamat pagi
+      - selamat siang
+      - selamat sore
+      - selamatpagi
+      - selamatsiang
+      - selamatsore
+
+  - intent: goodbye
+    examples: |
+      - cu
+      - good by
+      - cee you later
+      - good night
+      - bye
+      - goodbye
+      - have a nice day
+      - see you around
+      - bye bye
+      - see you later
+      - sampai jumpa
+      - sampai ketemu
+      - terima kasih
+      - dadah
+      - bai bai
+      - bai
+
+  - intent: affirm
+    examples: |
+      - yes
+      - y
+      - indeed
+      - of course
+      - that sounds good
+      - correct
+      - ya
+      - benar
+      - betul
+      - ok
+
+  - intent: deny
+    examples: |
+      - no
+      - n
+      - never
+      - I don't think so
+      - don't like that
+      - no way
+      - not really
+      - tidak
+      - nggak
+      - nope
+      - bukan
+
+  - intent: fungsi_bot
+    examples: |
+      - what can you do?
+      - what can u do?
+      - kamu bisa apa?
+      - kamu bisa apa saja?
+      - apa yang bisa saya lakukan?
+      - fungsimu buat apa?
+      - gunamu apa?
+
+  - intent: pilih_feedback
+    examples: |
+      - feedback
+      - fidbek
+      - tanggapan
+      - masukan
+
+  - intent: pilih_es
+    examples: |
+      - sistem pakar
+      - expert system
+      - deteksi
+      - prediksi
+
+  - intent: pilih_es_covid
+    examples: |
+      - covid
+      - covid19
+      - corona virus
+      - covid 19
+
+  - intent: pilih_disease_info
+    examples: |
+      - pencarian informasi
+      - pencarian informasi penyakit
+      - cari tau
+      - cari info
+      - 2
+      - informasi
+
+  - intent: pilih_monitoring
+    examples: |
+      - monitoring dokter
+      - form monitoring
+      - 3
+      - monitoring
+      - monitor
+
+  - intent: monit_pilih_isi
+    examples: |
+      - isi
+      - mengisi
+
+  - intent: monit_pilih_daftar
+    examples: |
+      - daftar
+      - mendaftar
+
+  - intent: monit_pilih_hapus
+    examples: |
+      - hapus
+      - batal

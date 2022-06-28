@@ -1,0 +1,195 @@
+version: "3.1"
+
+stories:
+  - story: menyapa
+    steps:
+      - intent: greet
+      - action: utter_greet
+
+  # feedback
+  - story: tanya fungsi feedback
+    steps:
+      - intent: fungsi_bot
+      - action: utter_fungsi
+      - intent: pilih_feedback
+      - action: utter_feedback
+
+  - story: greet feedback
+    steps:
+      - intent: greet
+      - action: utter_greet
+
+  # expert system
+  - story: tanya fungsi es
+    steps:
+      - intent: fungsi_bot
+      - action: utter_fungsi
+      - intent: pilih_es
+      - action: utter_es
+
+  - story: greet es
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: pilih_es
+      - action: utter_es
+
+  - story: tanya fungsi es covid
+    steps:
+      - intent: fungsi_bot
+      - action: utter_fungsi
+      - intent: pilih_es
+      - action: utter_es
+      - intent: pilih_es_covid
+      - action: es_covid_form
+      - active_loop: es_covid_form
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: action_es_covid
+      - action: utter_bantu_lagi
+
+  - story: greet es covid
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: pilih_es
+      - action: utter_es
+      - intent: pilih_es_covid
+      - action: es_covid_form
+      - active_loop: es_covid_form
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: action_es_covid
+      - action: utter_bantu_lagi
+
+  # disease info
+  - story: tanya fungsi disease info
+    steps:
+      - intent: fungsi_bot
+      - action: utter_fungsi
+      - intent: pilih_disease_info
+      - action: disease_info_form
+      - active_loop: disease_info_form
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: action_disease_info
+      - action: apakah_membantu_form
+      - active_loop: apakah_membantu_form
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: action_opini_bantu
+
+  - story: greet disease info
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: pilih_disease_info
+      - action: disease_info_form
+      - active_loop: disease_info_form
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: action_disease_info
+      - action: apakah_membantu_form
+      - active_loop: apakah_membantu_form
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: action_opini_bantu
+
+  # monitoring
+  # # isi data
+  # - story: tanya fungsi monitoring - isi
+  #   steps:
+  #     - intent: fungsi_bot
+  #     - action: utter_fungsi
+  #     - intent: pilih_monitoring
+  #     - action: utter_monit
+  #     - intent: monit_pilih_isi
+  #     - action: utter_monit_kode
+
+  # - story: greet monitoring - isi
+  #   steps:
+  #     - intent: greet
+  #     - action: utter_greet
+  #     - intent: pilih_monitoring
+  #     - action: utter_monit
+  #     - intent: monit_pilih_isi
+  #     - action: utter_monit_kode
+
+  # # daftar kode
+  - story: tanya fungsi monitoring - daftar
+    steps:
+      - intent: fungsi_bot
+      - action: utter_fungsi
+      - intent: pilih_monitoring
+      - action: utter_monit
+      - intent: monit_pilih_daftar
+      - action: monit_form
+      - active_loop: monit_form
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: action_monit_daftar
+      - action: utter_bantu_lagi
+
+  - story: greet monitoring - daftar
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: pilih_monitoring
+      - action: utter_monit
+      - intent: monit_pilih_daftar
+      - action: monit_form
+      - active_loop: monit_form
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: action_monit_daftar
+      - action: utter_bantu_lagi
+
+  # # hapus kode
+  - story: tanya fungsi monitoring - hapus
+    steps:
+      - intent: fungsi_bot
+      - action: utter_fungsi
+      - intent: pilih_monitoring
+      - action: utter_monit
+      - intent: monit_pilih_hapus
+      - action: action_monit_hapus_list
+      - action: monit_form
+      - active_loop: monit_form
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: action_monit_hapus_act
+      - action: utter_bantu_lagi
+
+  - story: greet monitoring - hapus
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: pilih_monitoring
+      - action: utter_monit
+      - intent: monit_pilih_hapus
+      - action: action_monit_hapus_list
+      - action: monit_form
+      - active_loop: monit_form
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: action_monit_hapus_act
+      - action: utter_bantu_lagi
+
+  # - story: greet monitoring - hapus
+  #   steps:
+  #     - intent: greet
+  #     - action: utter_greet
+  #     - intent: pilih_monitoring
+  #     - action: utter_monit
+  #     - intent: monit_pilih_hapus
+  #     - action: utter_monit_kode

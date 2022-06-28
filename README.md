@@ -32,13 +32,24 @@
 
 Made with svelte, frontend buat web. Ada di port 3000
 
-### API Gateway (belom buat)
+### API Gateway
 
-Rencananya pakai KrakenD
+Yang masih problem:
 
-### NLP (belom buat)
+    user service - /api/host-add
+    user-service - /api/host-pull
+    user-service - /api/subs-add
+    user-service - /api/subs-pull
 
-Dapet input dari halaman chat, buat tau perintah dari isi chatnya apa
+### Chatbot
+
+Pakai Rasa Framework, masih belom dimasukkin docker, jadi run sendiri pake:
+
+    rasa run --enable-api --cors="*" --port 5005 debug
+
+Buat jalanin actions server:
+
+    rasa run actions
 
 ### Questionare
 

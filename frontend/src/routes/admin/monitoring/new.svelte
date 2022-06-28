@@ -63,6 +63,14 @@
 				"questions": $storeFields
             })
         })
+		const hostadd = await fetch('http://localhost:8003/api/host-add/', {
+			method: 'PUT',
+			headers: { 'Content-Type': 'application/json' },
+			credentials: 'include',
+            body: JSON.stringify({
+                "code": uname + '-' + formData.code,
+            })
+		})
 		// formData.questions = $storeFields
 		// formData.host = uname
 		// formData.code = uname + '-' + formData.code

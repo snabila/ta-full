@@ -1,0 +1,33 @@
+{
+  "lookup": {
+    "rules": {
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"greet\"}}]": "utter_greet",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"greet\"}}, {\"prev_action\": {\"action_name\": \"utter_greet\"}, \"user\": {\"intent\": \"greet\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"monit_pilih_daftar\"}}]": "monit_form",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"monit_pilih_daftar\"}}, {\"active_loop\": {\"name\": \"should_not_be_set\"}, \"prev_action\": {\"action_name\": \"monit_form\"}, \"user\": {\"intent\": \"monit_pilih_daftar\"}}]": "utter_kode_test",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"monit_pilih_daftar\"}}, {\"active_loop\": {\"name\": \"should_not_be_set\"}, \"prev_action\": {\"action_name\": \"monit_form\"}, \"user\": {\"intent\": \"monit_pilih_daftar\"}}, {\"active_loop\": {\"name\": \"should_not_be_set\"}, \"prev_action\": {\"action_name\": \"utter_kode_test\"}, \"user\": {\"intent\": \"monit_pilih_daftar\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"fungsi_bot\"}}]": "utter_fungsi",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"fungsi_bot\"}}, {\"prev_action\": {\"action_name\": \"utter_fungsi\"}, \"user\": {\"intent\": \"fungsi_bot\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"utter_fungsi\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"utter_fungsi\"}}, {\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"pilih_feedback\"}}]": "utter_feedback",
+      "[{\"prev_action\": {\"action_name\": \"utter_fungsi\"}}, {\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"pilih_feedback\"}}, {\"prev_action\": {\"action_name\": \"utter_feedback\"}, \"user\": {\"intent\": \"pilih_feedback\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"utter_greet\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"utter_greet\"}}, {\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"pilih_feedback\"}}]": "utter_feedback",
+      "[{\"prev_action\": {\"action_name\": \"utter_greet\"}}, {\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"pilih_feedback\"}}, {\"prev_action\": {\"action_name\": \"utter_feedback\"}, \"user\": {\"intent\": \"pilih_feedback\"}}]": "action_listen"
+    },
+    "rule_only_slots": [],
+    "rule_only_loops": [],
+    "rules_for_loop_unhappy_path": {},
+    "rules_not_in_stories": [
+      "[{\"prev_action\": {\"action_name\": \"utter_greet\"}}]",
+      "handling active loops and forms - monit_form",
+      "predicting default action with intent back",
+      "[{\"prev_action\": {\"action_name\": \"utter_greet\"}}, {\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"pilih_feedback\"}}, {\"prev_action\": {\"action_name\": \"utter_feedback\"}, \"user\": {\"intent\": \"pilih_feedback\"}}]",
+      "[{\"prev_action\": {\"action_name\": \"utter_fungsi\"}}]",
+      "[{\"prev_action\": {\"action_name\": \"utter_greet\"}}, {\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"pilih_feedback\"}}]",
+      "predicting default action with intent session_start",
+      "predicting default action with intent restart",
+      "handling active loops and forms - monit_form - action_listen"
+    ]
+  }
+}

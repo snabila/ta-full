@@ -1,0 +1,242 @@
+version: "3.1"
+
+intents:
+  - greet
+  - goodbye
+  - affirm
+  - deny
+  - fungsi_bot
+  - pilih_feedback
+  - pilih_es
+  - pilih_es_covid
+  - pilih_disease_info
+  - pilih_monitoring
+  - monit_pilih_isi
+  - monit_pilih_daftar
+  - monit_pilih_hapus
+
+responses:
+  utter_greet:
+    - text: "Hai! Saya adalah Healthcare Chatbot yang masih dalam masa pengembangan. Berikut adalah fungsi yang bisa saya lakukan untuk saat ini:\n- Sistem pakar\n- Pencarian informasi penyakit\n- Monitoring dokter\n- Feedback"
+
+  utter_fungsi:
+    - text: "Saya adalah Healthcare Chatbot yang masih dalam masa pengembangan. Berikut adalah fungsi yang bisa saya lakukan untuk saat ini:\n- Sistem pakar\n- Pencarian informasi penyakit\n- Monitoring dokter\n- Feedback"
+
+  # Feedback
+  utter_feedback:
+    - text: "Anda bisa membantu dalam pengembangan chatbot ini dengan mengisi form feedback pada link dibawah dan jelaskan pengalaman Anda.\n\n[link]"
+
+  utter_feedback_positif:
+    - text: "Senang bisa membantu! Anda bisa membantu dalam pengembangan chatbot ini dengan mengisi form feedback pada link dibawah dan jelaskan pengalaman Anda.\n\n[link]"
+
+  utter_feedback_negatif:
+    - text: "Mohon maaf atas ketidaknyamanannya, Anda bisa membantu dalam pengembangan chatbot ini dengan mengisi form feedback pada link dibawah dan jelaskan pengalaman Anda.\n\n[link]"
+
+  # Expert system
+  utter_es:
+    - text: "Ini adalah list sistem pakar yang kami punya saat ini, Anda bisa mengaktifkannya dengan mengetikkan nama penyakit tersebut:\n- Covid"
+
+  utter_ask_es_covid_1:
+    - text: "OK! Mohon menjawab pertanyaan berikut ini ya, Apakah anda merasakan meriang atau demam?"
+
+  utter_ask_es_covid_2:
+    - text: "Apakah belakangan ini anda batuk-batuk?"
+
+  utter_ask_es_covid_3:
+    - text: "Apakah anda merasakan kesulitan bernafas?"
+
+  utter_ask_es_covid_4:
+    - text: "Apakah usia anda diatas 60 tahun?"
+
+  utter_ask_es_covid_5:
+    - text: "Apakah anda memiliki penyakit komorbid?"
+
+  utter_ask_es_covid_6:
+    - text: "Apakah anda baru saja berpergian belakangan ini?"
+
+  utter_ask_es_covid_7:
+    - text: "Apakah anda memiliki kontak dengan penderita Covid belakangan ini?"
+
+  # Disease info
+  utter_ask_penyakit_apa:
+    - text: "Informasi penyakit apa yang ingin anda cari?"
+
+  utter_ask_informasi_apa:
+    - text: "Jenis informasi apa yang ingin anda ketahui?\n- Penjelasan\n- Gejala\n- Kapan harus menemui dokter\n- Penyebab\n- Faktor resiko\n- Komplikasi\n- Pencegahan"
+
+  # Monitoring
+  utter_monit:
+    - text: "Anda bisa melakukan ini dengan fungsi monitoring:\n- Isi\n- Daftar\n- Hapus"
+
+  utter_ask_monit_kode:
+    - text: "Masukkan kode monitoring yang Anda mau:"
+
+  utter_monit_daftar_oke:
+    - text: "Anda berhasil terdaftar.\n\nApakah ada lagi yang bisa saya bantu?"
+
+  utter_monit_404:
+    - text: "Maaf kami tidak dapat menemukan monitoring dengan kode tersebut. Anda bisa membantu melaporkan kejadian ini melalui form feedback pada link dibawah ini.\n\n[link]"
+
+  utter_no_function:
+    - text: "Maaf, saya belum bisa melakukan perintah tersebut."
+    - text: "Saya belum bisa melakukan perintah tersebut."
+
+  utter_kode_test:
+    - text: "Kode yang kamu masukkan adalah {monit_kode}"
+
+  #
+  utter_ask_opini_bantu:
+    - text: "Apakah informasi tersebut membantu?"
+
+  utter_bantu_lagi:
+    - text: "Apakah ada lagi yang bisa saya bantu?"
+
+actions:
+  - action_monit_daftar
+  - action_monit_hapus_list
+  - action_monit_hapus_act
+  - action_disease_info
+  - action_es_covid
+  - action_opini_bantu
+  # - action_apakah_bantu
+
+forms:
+  monit_form:
+    required_slots:
+      - monit_kode
+
+  disease_info_form:
+    required_slots:
+      - penyakit_apa
+      - informasi_apa
+
+  es_covid_form:
+    required_slots:
+      - es_covid_1
+      - es_covid_2
+      - es_covid_3
+      - es_covid_4
+      - es_covid_5
+      - es_covid_6
+      - es_covid_7
+
+  apakah_membantu_form:
+    required_slots:
+      - opini_bantu
+
+  # apakah_bantu_form:
+  #   required_slots:
+  #     - bantu_lagi
+
+slots:
+  monit_kode:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: monit_form
+            requested_slot: monit_kode
+
+  penyakit_apa:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: disease_info_form
+            requested_slot: penyakit_apa
+
+  informasi_apa:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: disease_info_form
+            requested_slot: informasi_apa
+
+  es_covid_1:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: es_covid_form
+            requested_slot: es_covid_1
+
+  es_covid_2:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: es_covid_form
+            requested_slot: es_covid_2
+
+  es_covid_3:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: es_covid_form
+            requested_slot: es_covid_3
+
+  es_covid_4:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: es_covid_form
+            requested_slot: es_covid_4
+
+  es_covid_5:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: es_covid_form
+            requested_slot: es_covid_5
+
+  es_covid_6:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: es_covid_form
+            requested_slot: es_covid_6
+
+  es_covid_7:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: es_covid_form
+            requested_slot: es_covid_7
+
+  opini_bantu:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: apakah_membantu_form
+            requested_slot: opini_bantu
+
+  # bantu_lagi:
+  #   type: text
+  #   influence_conversation: true
+  #   mappings:
+  #     - type: from_text
+  #       conditions:
+  #         - active_loop: apakah_bantu_form
+  #           requested_slot: bantu_lagi
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true

@@ -211,27 +211,46 @@ router.put("/host-pull", async (req, res) => {
   }
 });
 
+// get subscribe monitoring
+router.get("/subs-list", async (req, res) => {
+  try {
+    const user = await User.findOne({ username: req.body.uname });
+
+    const { username, subscribed, ...data } = await user.toJSON();
+
+    res.send({
+      username: username,
+      subscribed: subscribed,
+    });
+  } catch (e) {
+    console.log(e);
+    return res.send({
+      message: "unauthenticated",
+    });
+  }
+});
+
 // add subscribe monitoring
 router.put("/subs-add", async (req, res) => {
   try {
-    const cookie = req.cookies["jwt"];
+    // const cookie = req.cookies["jwt"];
 
-    const claims = jwt.verify(cookie, process.env.JWT_TOKEN_SECRET);
+    // const claims = jwt.verify(cookie, process.env.JWT_TOKEN_SECRET);
 
-    if (!claims) {
-      return res.status(401).send({
-        message: "unauthenticated",
-      });
-    }
+    // if (!claims) {
+    //   return res.status(401).send({
+    //     message: "unauthenticated",
+    //   });
+    // }
 
-    if (claims.role == "dokter") {
-      return res.status(403).send({
-        message: "forbidden",
-      });
-    }
+    // if (claims.role == "dokter") {
+    //   return res.status(403).send({
+    //     message: "forbidden",
+    //   });
+    // }
 
     const user = await User.findOneAndUpdate(
-      { username: claims.username },
+      { username: req.body.uname },
       {
         $addToSet: {
           subscribed: req.body.code,
@@ -239,7 +258,7 @@ router.put("/subs-add", async (req, res) => {
       }
     );
 
-    updateduser = await User.findOne({ username: claims.username });
+    updateduser = await User.findOne({ username: req.body.uname });
 
     const { username, subscribed, ...data } = await updateduser.toJSON();
 
@@ -248,7 +267,8 @@ router.put("/subs-add", async (req, res) => {
       subscribed: subscribed,
     });
   } catch (e) {
-    return res.status(401).send({
+    console.log(e);
+    return res.send({
       message: "unauthenticated",
     });
   }
@@ -257,24 +277,24 @@ router.put("/subs-add", async (req, res) => {
 // remove subscribed monitoring
 router.put("/subs-pull", async (req, res) => {
   try {
-    const cookie = req.cookies["jwt"];
+    // const cookie = req.cookies["jwt"];
 
-    const claims = jwt.verify(cookie, process.env.JWT_TOKEN_SECRET);
+    // const claims = jwt.verify(cookie, process.env.JWT_TOKEN_SECRET);
 
-    if (!claims) {
-      return res.status(401).send({
-        message: "unauthenticated",
-      });
-    }
+    // if (!claims) {
+    //   return res.status(401).send({
+    //     message: "unauthenticated",
+    //   });
+    // }
 
-    if (claims.role == "dokter") {
-      return res.status(403).send({
-        message: "forbidden",
-      });
-    }
+    // if (claims.role == "dokter") {
+    //   return res.status(403).send({
+    //     message: "forbidden",
+    //   });
+    // }
 
     const user = await User.findOneAndUpdate(
-      { username: claims.username },
+      { username: req.body.uname },
       {
         $pull: {
           subscribed: req.body.code,
@@ -282,7 +302,7 @@ router.put("/subs-pull", async (req, res) => {
       }
     );
 
-    updateduser = await User.findOne({ username: claims.username });
+    updateduser = await User.findOne({ username: req.body.uname });
 
     const { username, subscribed, ...data } = await updateduser.toJSON();
 
