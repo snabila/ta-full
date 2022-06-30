@@ -1,48 +1,13 @@
 <script>
 	import { goto } from '$app/navigation';
-	import {onMount} from 'svelte'
-	import {authenticated, authrole} from '../stores/auth'
-	import {messageStore} from '../stores/chat'
+	import { fade, fly } from 'svelte/transition';
+	import { messageStore } from '../stores/chat'
 	import MsgList from '../components/chat/MsgList.svelte'
 
-	let name = ''
-	let uname = ''
-	let data
-
-	let auth, role
-	authenticated.subscribe(a => auth = a)
-	authrole.subscribe(r => role = r)
+	export let auth, authUser
 
 	let message = ''
 	let messageField
-
-	onMount(async () => {
-		try {
-			const response = await fetch('http://localhost:8080/auth/user', {
-				headers: {'Content-Type': 'application/json'},
-				credentials: 'include',
-			})
-			const content = await response.json()
-
-			if (response.status == 401) {
-				name = ''
-				$authenticated = false
-			} else {
-				$authenticated = true
-				$authrole = content.role
-				
-				console.log(role)
-				data = content
-				
-				name = content.name
-				uname = content.username
-			}
-		} catch (error) {
-			name = ''
-			$authenticated = false
-		}
-		
-	})
 
 	const submit = async () => {
 		// tambahin pesan user ke array buat tampilin di ui
@@ -62,7 +27,7 @@
 			headers: {'Content-Type': 'application/json'},
 			credentials: 'include',
 			body: JSON.stringify({
-                'sender' : uname,
+                'sender' : authUser.username,
 				'message' : message
             })
 		})
@@ -81,19 +46,6 @@
 			})
 		});
 
-		// const newMessageBot = {
-		// 	'id': String($messageStore.length),
-		// 	'type': 'bot',
-		// 	'msg': content[0]['text']
-		// }
-
-		// messageStore.update((currentMessage) => {
-		// 	return [newMessageBot, ...currentMessage]
-		// })
-		// messages.push({
-		// 	'type': 'bot',
-		// 	'message': content[0]['text']
-		// })
 		console.log(content[0]['text'])
 
 		// reset input field
@@ -107,10 +59,34 @@
 			headers: {'Content-Type': 'application/json'},
 			credentials: 'include',
 		})
-		$authenticated = false
-		name = ''
-		await goto('/')
+		auth = false
+		await goto('/login')
 	}
+</script>
+
+<script context="module">
+	export async function load({ fetch }) {
+		const response = await fetch('http://localhost:8080/auth/user', {
+			headers: {'Content-Type': 'application/json'},
+			credentials: 'include',
+		})
+
+		let data = await response.json()
+		// console.log(response.status)
+		
+		if (response.status == 200) {
+			return {
+				props: {
+					auth: true,
+					authUser: data
+				}
+			}
+		} else {
+			return {
+				props: { auth: false, authUser: [] }
+			}	
+		}
+	}	
 </script>
 
 <svelte:head>
@@ -120,10 +96,14 @@
 <div class="bg-gray-50 max-h-screen h-screen w-screen overflow-y-scroll">
 	<div class="max-w-2xl mx-auto">
 		<header class="mx-auto px-3 max-w-2xl flex items-center justify-between">
-			<h1 class="text-xl my-8 w-max inline-block">Halo {name}!</h1>
+			{#if auth}
+				<h1 class="text-xl my-8 w-max inline-block">Halo {authUser.name}!</h1>
+			{:else}
+				<h1 class="text-xl my-8 w-max inline-block">Halo!</h1>
+			{/if}
 			<div class="w-max inline-block">
 				{#if auth}
-					{#if data.role == 'dokter'}<a href="/admin" class="text-purple-600">Admin</a>{/if}
+					{#if authUser.role == 'dokter'}<a href="/admin" class="text-purple-600">Admin</a>{/if}
 					<button on:click={logout} class="ml-2 text-purple-600">Logout</button>
 				{:else}
 					<a href="/login" class="text-purple-600">Login</a>
@@ -137,7 +117,7 @@
 					<form on:submit|preventDefault={submit} class="inline-flex w-full mb-3">
 						{#if !auth}
 						<input
-							class="px-3 py-3 rounded-md w-full bg-white focus:ring-violet-100 focus:ring-4 transition focus-visible:outline-none"
+							class="px-3 py-3 rounded-md w-full bg-gray-100 transition focus-visible:outline-none border-2 border-gray-200"
 							type="text"
 							name="pesan"
 							id="pesan"
@@ -170,9 +150,6 @@
 					<p>Ketikkan <code>`fungsi`</code> untuk melihat daftar fungsi chatbot</p>
 				</div>
 			</div>
-
-			
-
 			<MsgList />
 		</main>
 	</div>

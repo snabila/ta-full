@@ -3,43 +3,72 @@
 	import { goto } from '$app/navigation';
 	import { pageName } from '../../../stores/admin.js';
 
-	let data, uname
-	let data2 = []
-
 	onMount(async () => {
 		pageName.update(() => document.title);
-
-		try {
-			const response = await fetch('http://localhost:8080/auth/user', {
-				headers: {'Content-Type': 'application/json'},
-				credentials: 'include',
-			})
-			const content = await response.json()
-			data = content
-			uname = content.username
-
-			if (response.status == 401) {
-				goto('/')
-			} else {
-				console.log(content.hosting)
-				let codes = content.hosting
-				let codeslen = codes.length
-				for (let i = 0; i < codeslen; i++) {
-					let datakode = await fetch('http://localhost:8080/monit/code/' + codes[i], {
-						headers: {'Content-Type': 'application/json'},
-						credentials: 'include',
-					})
-					data2.push(await datakode.json())
-					// data2 = await datakode.json()
-					console.log(data2)
-				}
-				console.log(data2[0]['data'][0]['name'])
-
-			}
-		} catch (error) {
-			goto('/login')
-		}
 	});
+
+	export let monitList
+
+	console.log(monitList[2].monit.participants)
+</script>
+
+<script context="module">
+	export async function load({ fetch }) {
+		const response = await fetch('http://localhost:8080/auth/user', {
+			headers: {'Content-Type': 'application/json', 'If-None-Match': '*'},
+			credentials: 'include',
+		})
+
+		let data = await response.json()
+		// console.log(data.value)
+		
+		if (response.status == 200) {
+			if (data.role === 'dokter'){
+				let hosting = data.hosting
+				let monitList = []
+
+				for (let i = 0; i < hosting.length; i++) {
+					const response = await fetch('http://localhost:8080/monit/code/' + hosting[i])
+					const temp = await response.json()
+					let item = temp.data[0]
+
+					const records = await fetch('http://localhost:8080/record/code/' + hosting[i])
+					const temp2 = await records.json()
+					let recordN
+					if (temp2.code == 200) {
+						// const record = temp2.data[0].
+						// console.log(temp2.data[0].length)
+						recordN = temp2.data[0].length
+					} else {
+						recordN = 0
+					}
+
+					monitList.push({ monit: item, recordN: recordN})
+				}
+				// const response = await fetch('http://localhost:8080/record/code/' + params.id)
+				// 	const temp2 = await response.json()
+
+				// 	if (temp2.code == 200) {
+				// 		// const record = temp2.data[0].
+				// 		console.log(temp2.data[0])
+				// 	}
+
+				return {
+					props: { monitList: monitList }
+				}
+			} else {
+				return {
+					status: 403,
+					error: 'Akun anda tidak memiliki akses terhadap halaman ini.'
+				}
+			}
+		} else {
+			return {
+				status: 302,
+				redirect: '/login'
+			}	
+		}
+	}
 </script>
 
 <svelte:head>
@@ -48,47 +77,31 @@
 
 <div class="w-full overflow-hidden rounded-lg shadow-xs">
 	<div class="w-full overflow-x-auto">
-		<table class="w-full whitespace-no-wrap border border-neutral-200">
+		<table class="w-full whitespace-no-wrap border border-neutral-200 table-fixed border-collapse">
 			<thead>
 				<tr
 					class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800"
 				>
-					<th class="px-4 py-3">Nama</th>
-					<th class="px-4 py-3">Jumlah Pasien</th>
-					<th class="px-4 py-3">Respon</th>
-					<th class="px-4 py-3">Edit Terakhir</th>
+					<th class="px-4 py-3 border border-neutral-200">Nama</th>
+					<th class="px-4 py-3 border border-neutral-200">Jumlah Pasien</th>
+					<th class="px-4 py-3 border border-neutral-200">Respon</th>
 				</tr>
 			</thead>
-			{#each data2 as input}
+			{#each monitList as monit}
 				<tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
 				<tr class="text-gray-700 dark:text-gray-400">
-					<td class="px-4 py-5">
-						<div class="flex items-center text-sm">
-							<div>
-								<a href="/admin/monitoring/id"><p class="font-semibold">{ input['data'][0]['name'] }</p></a>
-							</div>
-						</div>
+					<td class="px-4 py-3 border border-neutral-200">
+						<a href="/admin/monitoring/code/{ monit.monit.code }" class="font-semibold text-sm">{ monit.monit.name }</a>
 					</td>
-					<td class="px-4 py-5 text-sm"></td>
-					<td class="px-4 py-5 text-sm"></td>
-					<td class="px-4 py-5 text-sm"></td>
+					{#if monit.monit.participants}
+						<td class="px-4 py-3 text-sm border border-neutral-200">{ monit.monit.participants.length }</td>
+					{:else}
+						<td class="px-4 py-3 text-sm border border-neutral-200">0</td>
+					{/if}
+					<td class="px-4 py-3 text-sm border border-neutral-200">{ monit.recordN }</td>
 				</tr>
 			</tbody>
 			{/each }
-			<tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
-				<tr class="text-gray-700 dark:text-gray-400">
-					<td class="px-4 py-5">
-						<div class="flex items-center text-sm">
-							<div>
-								<a href="/admin/monitoring/id"><p class="font-semibold">Monitoring Psoriasis</p></a>
-							</div>
-						</div>
-					</td>
-					<td class="px-4 py-5 text-sm">12</td>
-					<td class="px-4 py-5 text-sm">36</td>
-					<td class="px-4 py-5 text-sm"> 6/10/2020 </td>
-				</tr>
-			</tbody>
 		</table>
 	</div>
 </div>

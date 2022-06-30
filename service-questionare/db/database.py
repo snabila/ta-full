@@ -43,6 +43,13 @@ def r_helper(q) -> dict:
         "submit_time": q["submit_time"],
         "answers": q["answers"]
     }
+    
+# # Participant helper
+def p_helper(q) -> dict:
+    return {
+        "code": q["code"],
+        "participants": q["participants"]
+    }
 
 ####################
 ### Questionares ###
@@ -75,6 +82,48 @@ async def retrieve_qus(code: str) -> dict:
         qus = questions_helper(qus)
         return qus["questions"]
 
+# push a new participant to a monitoring code
+async def push_participant(code: str, uname: str):
+    q = await qs_collection.find_one({"code": code})
+    if q:
+        newParticipant = q_helper(q)['participants']
+        if newParticipant:
+            if uname in newParticipant:
+                newParticipant.append(uname)
+            else:
+                return False
+        else :
+            newParticipant = [uname]
+
+        updated_q = await qs_collection.update_one(
+            {"code": code}, {"$set": {"participants": newParticipant}}
+        )
+
+        if updated_q:
+            return True
+        return False
+
+    return False
+
+# pull a participant
+async def pull_participant(code: str, uname: str):
+    q = await qs_collection.find_one({"code": code})
+    if q:
+        newParticipant = q_helper(q)['participants']
+
+        if uname in newParticipant:
+            newParticipant.remove(uname)
+        else:
+            return False
+
+        updated_q = await qs_collection.update_one(
+            {"code": code}, {"$set": {"participants": newParticipant}}
+        )
+        
+        if updated_q:
+            return True
+        return False
+    return False
 
 # Update a questionare with a matching code
 async def update_q(code: str, data: dict):

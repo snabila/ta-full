@@ -9,7 +9,7 @@
     {
       "endpoint": "/auth/signup",
       "method": "POST",
-      "output_encoding": "json",
+      "output_encoding": "no-op",
       "backend": [
         {
           "url_pattern": "/api/signup",
@@ -36,7 +36,8 @@
           "disable_host_sanitize": false
         }
       ],
-      "timeout": "5000ms"
+      "timeout": "5000ms",
+      "input_headers": ["*"]
     },
     {
       "endpoint": "/auth/user",
@@ -52,7 +53,7 @@
           "disable_host_sanitize": false
         }
       ],
-      "input_headers": ["Cookie"]
+      "input_headers": ["*"]
     },
     {
       "endpoint": "/auth/logout",
@@ -67,7 +68,8 @@
           "host": ["http://service-user:8003"],
           "disable_host_sanitize": false
         }
-      ]
+      ],
+      "input_headers": ["Access-Control-Allow-Origin", "Cookie"]
     },
     {
       "endpoint": "/auth/user/{username}",

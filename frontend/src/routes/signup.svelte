@@ -2,9 +2,10 @@
     import {goto} from "$app/navigation"
     
     let name = '', username = '', email = '', password = '', role = ''
+    let error
 
     const submit = async () => {
-        await fetch('http://localhost:8080/auth/signup', {
+        const result = await fetch('http://localhost:8080/auth/signup', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -15,8 +16,31 @@
                 role
             })
         })
-        await goto('/login')
+        if (result.status == 200) {
+          await goto('/login')
+        } else {
+          error = await result.json()
+          console.log(error)
+        }
     }
+</script>
+
+<script context="module">
+	export async function load({ fetch }) {
+		const response = await fetch('http://localhost:8080/auth/user', {
+			headers: {'Content-Type': 'application/json'},
+			credentials: 'include',
+		})
+		
+		if (response.status == 200) {
+			return {
+        status: 302,
+        redirect: '/'
+			}
+		} else {
+			return {}	
+		}
+	}	
 </script>
 
 <main class="h-screen max-h-screen bg-gray-50">
@@ -25,6 +49,11 @@
     <div>
       <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">Daftar akun baru</h2>
     </div>
+    {#if error}
+    <div class="rounded-md bg-red-100 px-1 py-2 text-center text-sm text-red-500">
+      <p>{error.message}</p>
+    </div>
+    {/if}
     <form class="mt-8 space-y-6" on:submit|preventDefault={submit}>
       <input type="hidden" name="remember" value="true">
       <div class="rounded-md shadow-sm -space-y-px">

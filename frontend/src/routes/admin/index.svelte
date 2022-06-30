@@ -2,30 +2,77 @@
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { pageName } from '../../stores/admin.js';
-
-	let data
+	import { parseDate } from '$lib/date.js'
 
 	onMount(async () => {
 		pageName.update(() => document.title);
-
-		try {
-			const response = await fetch('http://localhost:8080/auth/user', {
-				headers: {'Content-Type': 'application/json'},
-				credentials: 'include',
-			})
-			const content = await response.json()
-			data = content
-
-			if (response.status == 401) {
-				goto('/')
-			} else {
-				console.log(content)
-			}
-		} catch (error) {
-			goto('/')
-		}
 	});
-	console.log(data)
+
+	export let auth
+	export let recordList, patientList
+</script>
+
+<script context="module">
+	export async function load({ fetch }) {
+		const response = await fetch('http://localhost:8080/auth/user', {
+			headers: {'Content-Type': 'application/json', 'If-None-Match': '*'},
+			credentials: 'include',
+		})
+
+		let data = await response.json()
+		// console.log(response.status)
+		
+		if (response.status == 200) {
+			if (data.role === 'dokter'){
+				let hosting = data.hosting
+				let recordList = []
+				let patientList = []
+
+				for (let i = 0; i < hosting.length; i++) {
+					const records = await fetch('http://localhost:8080/record/code/' + hosting[i])
+					const temp = await records.json()
+
+					if (temp.code == 200) {
+						// console.log(temp.data[0])
+						recordList = recordList.concat(temp.data[0])
+					}
+
+					const patients = await fetch('http://localhost:8080/monit/code/' + hosting[i])
+					const temp2 = await patients.json()
+
+					if (temp2.code == 200) {
+						if (temp2.data[0].participants) {
+							patientList = patientList.concat(temp2.data[0].participants)
+						}
+					}
+				}
+				if (recordList) {
+					recordList.sort(function(a,b) {
+						const keyA = new Date(a.submit_time), keyB = new Date(b.submit_time);
+						if (keyA > keyB) return -1;
+						if (keyA < keyB) return 1;
+						return 0;
+					})
+				}
+				if (patientList) {
+					patientList = [...new Set(patientList)]
+				}
+				return {
+					props: { auth: data, recordList:recordList, patientList: patientList }
+				}
+			} else {
+				return {
+					status: 403,
+					error: 'Akun anda tidak memiliki akses terhadap halaman ini.'
+				}
+			}
+		} else {
+			return {
+				status: 302,
+				redirect: '/login'
+			}	
+		}
+	}
 </script>
 
 <svelte:head>
@@ -56,8 +103,8 @@
 			</svg>
 		</div>
 		<div>
-			<p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">Monitoring Form</p>
-			<p class="text-lg font-semibold text-gray-700 dark:text-gray-200">5</p>
+			<a href="/admin/monitoring"><p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">Monitoring Form</p></a>
+			<p class="text-lg font-semibold text-gray-700 dark:text-gray-200">{ auth.hosting.length }</p>
 		</div>
 	</div>
 
@@ -80,8 +127,8 @@
 			</svg>
 		</div>
 		<div>
-			<p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">Pasien Monitoring</p>
-			<p class="text-lg font-semibold text-gray-700 dark:text-gray-200">48</p>
+			<a href="/admin/pasien"><p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">Pasien Monitoring</p></a>
+			<p class="text-lg font-semibold text-gray-700 dark:text-gray-200">{ patientList.length }</p>
 		</div>
 	</div>
 
@@ -106,13 +153,14 @@
 			</svg>
 		</div>
 		<div>
-			<p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">Total Respon</p>
-			<p class="text-lg font-semibold text-gray-700 dark:text-gray-200">376</p>
+			<a href="/admin/pasien"><p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">Total Respon</p></a>
+			<p class="text-lg font-semibold text-gray-700 dark:text-gray-200">{ recordList.length }</p>
 		</div>
 	</div>
 </div>
 
 <!-- Table -->
+{#if recordList}
 <div class="w-full overflow-hidden rounded-lg shadow-xs">
 	<div class="w-full overflow-x-auto">
 		<table class="w-full whitespace-no-wrap border border-neutral-200">
@@ -120,35 +168,24 @@
 				<tr
 					class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800"
 				>
-					<th class="px-4 py-3">Resnpon Terbaru</th>
+					<th class="px-4 py-3">Respon Terbaru</th>
 					<th class="px-4 py-3">Form Monitoring</th>
 					<th class="px-4 py-3">Tanggal</th>
 				</tr>
 			</thead>
 			<tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
+				{#each recordList as record}
 				<tr class="text-gray-700 dark:text-gray-400">
-					<td class="px-4 py-5">
-						<div class="flex items-center text-sm">
-							<!-- Avatar with inset shadow -->
-							<!-- <div class="relative hidden w-8 h-8 mr-3 rounded-full md:block">
-								<img
-									class="object-cover w-full h-full rounded-full"
-									src="https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjE3Nzg0fQ"
-									alt=""
-									loading="lazy"
-								/>
-								<div class="absolute inset-0 rounded-full shadow-inner" aria-hidden="true" />
-							</div> -->
-							<div>
-								<p class="font-semibold">Hans Burger</p>
-							</div>
-						</div>
+					<td class="px-4 py-3 text-sm">
+						<a href="/admin/pasien/{ record.user }"><p class="font-semibold">{ record.user }</p></a>
 					</td>
-					<td class="px-4 py-5 text-sm"> jj-psoriasis </td>
+					<td class="px-4 py-3 text-sm">{ record.qs_code }</td>
 
-					<td class="px-4 py-5 text-sm"> 6/10/2020 </td>
+					<td class="px-4 py-3 text-sm">{ parseDate(record.submit_time) }</td>
 				</tr>
+				{/each}
 			</tbody>
 		</table>
 	</div>
 </div>
+{/if}

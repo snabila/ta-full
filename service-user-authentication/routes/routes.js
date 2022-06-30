@@ -11,10 +11,12 @@ router.post("/signup", async (req, res) => {
     let username = req.body.username;
 
     let find = await User.findOne({ email });
-    if (find) return res.status(400).send("Email already registered.");
+    if (find)
+      return res.status(400).send({ message: "Email already registered." });
 
     find = await User.findOne({ username });
-    if (find) return res.status(400).send("Username already registered.");
+    if (find)
+      return res.status(400).send({ message: "Username already registered." });
 
     const user = new User({
       name: req.body.name,
@@ -39,13 +41,13 @@ router.post("/login", async (req, res) => {
 
   if (!user) {
     return res.status(404).send({
-      message: "user not found",
+      message: "User not found",
     });
   }
 
   if (!(await user.isValidPassword(req.body.password, user.password))) {
     return res.status(400).send({
-      message: "invalid password",
+      message: "Invalid password",
     });
   }
 

@@ -26,6 +26,9 @@ class UpdateQuestionare(BaseModel):
     questions : Optional[List[QuestionareFields]]
     participants : Optional[List[str]]
 
+class PushParticipant(BaseModel):
+    username : str
+
 class AnswerFields(BaseModel):
     q_id : int
     answer : str

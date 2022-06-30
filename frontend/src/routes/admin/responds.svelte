@@ -1,21 +1,71 @@
 <script>
 	import { onMount } from 'svelte';
-
 	import { pageName } from '../../stores/admin';
+	import { parseDate } from '$lib/date.js'
+	export let recordList
 
-	// // onMount(async () => {
-	// // 	pageName.update(() => 'Dashboard');
-	// // });
+	// console.log(recordList)
 
-	// // let displayPageName;
-
-	// // pageName.subscribe((value) => {
-	// // 	displayPageName = value;
-	// // });
+	
 
 	onMount(() => {
 		pageName.update(() => document.title);
 	});
+</script>
+
+<script context="module">
+	export async function load({ fetch }) {
+		const response = await fetch('http://localhost:8080/auth/user', {
+			headers: {'Content-Type': 'application/json', 'If-None-Match': '*'},
+			credentials: 'include',
+		})
+
+		let data = await response.json()
+		// console.log(data.value)
+		
+		if (response.status == 200) {
+			if (data.role === 'dokter'){
+				let hosting = data.hosting
+				let recordList = []
+
+				for (let i = 0; i < hosting.length; i++) {
+					const records = await fetch('http://localhost:8080/record/code/' + hosting[i])
+					const temp2 = await records.json()
+
+					// cek kode monitong punya record atau ngga
+					if (temp2.code == 200) {
+						// const record = temp2.data[0].
+						recordList = recordList.concat(temp2.data[0])
+						// recordN = temp2.data[0].length
+					}
+
+					// recordList.push({ monit: item, recordN: recordN})
+				}
+				if (recordList) {
+					recordList.sort(function(a,b) {
+						const keyA = new Date(a.submit_time), keyB = new Date(b.submit_time);
+						if (keyA > keyB) return -1;
+						if (keyA < keyB) return 1;
+						return 0;
+					})
+				}
+				// console.log(recordList)
+				return {
+					props: { recordList: recordList }
+				}
+			} else {
+				return {
+					status: 403,
+					error: 'Akun anda tidak memiliki akses terhadap halaman ini.'
+				}
+			}
+		} else {
+			return {
+				status: 302,
+				redirect: '/login'
+			}	
+		}
+	}
 </script>
 
 <svelte:head>
@@ -25,6 +75,7 @@
 <!-- Table -->
 <div class="w-full overflow-hidden rounded-lg shadow-xs">
 	<div class="w-full overflow-x-auto">
+		{#if recordList}
 		<table class="w-full whitespace-no-wrap border border-neutral-200">
 			<thead>
 				<tr
@@ -36,20 +87,15 @@
 				</tr>
 			</thead>
 			<tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
+				{#each recordList as record}
 				<tr class="text-gray-700 dark:text-gray-400">
-					<td class="px-4 py-5">
-						<div class="flex items-center text-sm">
-							
-							<div>
-								<p class="font-semibold">Hans Burger</p>
-							</div>
-						</div>
-					</td>
-					<td class="px-4 py-5 text-sm"> jj-psoriasis </td>
-
-					<td class="px-4 py-5 text-sm"> 6/10/2020 </td>
+					<td class="px-4 py-3 text-sm"><a href="/admin/pasien/{ record.user }"><p class="font-semibold">{ record.user }</p></a></td>
+					<td class="px-4 py-3 text-sm">{ record.qs_code }</td>
+					<td class="px-4 py-3 text-sm">{ parseDate(record.submit_time) }</td>
 				</tr>
+				{/each}
 			</tbody>
 		</table>
+		{/if}
 	</div>
 </div>

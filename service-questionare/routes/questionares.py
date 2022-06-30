@@ -1,4 +1,5 @@
 import json
+from turtle import update
 from fastapi import APIRouter, Body
 from fastapi.encoders import jsonable_encoder
 
@@ -8,12 +9,15 @@ from db.database import (
     retrieve_qs,
     retrieve_qus,
     update_q,
-    delete_q
+    delete_q,
+    push_participant,
+    pull_participant
 )
 
 from db.models import (
     Questionare,
     UpdateQuestionare,
+    PushParticipant,
     ResponseModel,
     ErrorResponseModel
 )
@@ -50,6 +54,36 @@ async def get_questions(code):
     if questionare:
         return ResponseModel(questionare, "Questions data retrieved successfully")
     return ErrorResponseModel("An error occured.", 404, "Questionare doesn't exist.")
+
+# Add a new participant into a questionare
+@router.put("/{code}/push")
+async def add_new_participant(code: str, newParticipant: PushParticipant):
+    updated_q = await push_participant(code, newParticipant.username)
+    if updated_q:
+        return ResponseModel(
+            "Participant {} added successfully".format(newParticipant.username),
+            "Questionare updated successfully",
+        )
+    return ErrorResponseModel(
+        "An error occurred",
+        404,
+        "There was an error updating the questionare data.",
+    )
+
+# Pull a participant into a questionare
+@router.put("/{code}/pull")
+async def del_participant(code: str, newParticipant: PushParticipant):
+    updated_q = await pull_participant(code, newParticipant.username)
+    if updated_q:
+        return ResponseModel(
+            "Participant {} removed successfully".format(newParticipant.username),
+            "Questionare updated successfully",
+        )
+    return ErrorResponseModel(
+        "An error occurred",
+        404,
+        "There was an error updating the questionare data.",
+    )
 
 # Update an existing questionare
 @router.put("/{code}")

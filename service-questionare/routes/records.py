@@ -46,3 +46,7 @@ async def get_record_code_uname(code, uname):
     if records:
         return ResponseModel(records, "Records retrieved successfully")
     return ErrorResponseModel("An error occurred.", 404, "There are no records found")
+
+# Get all records from a specific host
+# @router.get("/host/{uname}", response_description="Records retrieved")
+# async def get_record_host(uname):
