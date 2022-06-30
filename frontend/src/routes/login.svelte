@@ -1,8 +1,18 @@
 <script>
-    import {goto} from "$app/navigation"
+    import { onMount } from 'svelte';
+    import { goto } from '$app/navigation';
+    import { fade } from 'svelte/transition';
+    import { ScaleOut } from 'svelte-loading-spinners'
     let username = '', password = ''
     let error
 
+    let spinner
+    onMount(() => {
+      setTimeout(() => {
+        spinner = true;
+      }, 2000);
+    });
+    
     const submit = async () => {
         const result = await fetch('http://localhost:8080/auth/login', {
             method: 'POST',
@@ -40,7 +50,17 @@
 	}	
 </script>
 
-<main class="h-screen max-h-screen bg-gray-50">
+<svelte:head>
+	<title>Daftar</title>
+</svelte:head>
+
+{#if !spinner}
+<div class="absolute z-20 w-screen h-screen bg-gray-50 flex items-center justify-center" in:fade out:fade>
+	<ScaleOut size="60" color="#9333ea" unit="px" duration="1s"></ScaleOut>
+</div>
+{/if}
+
+<main class="h-screen max-h-screen bg-gray-50" out:fade>
 <div class="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
   <div class="max-w-md w-full space-y-8">
     

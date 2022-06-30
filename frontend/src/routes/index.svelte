@@ -1,13 +1,22 @@
 <script>
+	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
-	import { fade, fly } from 'svelte/transition';
+	import { fade } from 'svelte/transition';
+	import { ScaleOut } from 'svelte-loading-spinners'
 	import { messageStore } from '../stores/chat'
 	import MsgList from '../components/chat/MsgList.svelte'
 
 	export let auth, authUser
 
+	let spinner
 	let message = ''
 	let messageField
+
+	onMount(() => {
+		setTimeout(() => {
+			spinner = true;
+		}, 2000);
+	});
 
 	const submit = async () => {
 		// tambahin pesan user ke array buat tampilin di ui
@@ -93,7 +102,13 @@
 	<title>Healthcare Chatbot</title>
 </svelte:head>
 
-<div class="bg-gray-50 max-h-screen h-screen w-screen overflow-y-scroll">
+{#if !spinner}
+<div class="absolute z-20 w-screen h-screen bg-gray-50 flex items-center justify-center" in:fade out:fade>
+	<ScaleOut size="60" color="#9333ea" unit="px" duration="1s"></ScaleOut>
+</div>
+{/if}
+
+<div class="bg-gray-50 max-h-screen h-screen w-screen overflow-y-scroll" out:fade>
 	<div class="max-w-2xl mx-auto">
 		<header class="mx-auto px-3 max-w-2xl flex items-center justify-between">
 			{#if auth}

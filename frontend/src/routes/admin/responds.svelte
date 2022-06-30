@@ -1,12 +1,9 @@
 <script>
 	import { onMount } from 'svelte';
+	import { fade } from 'svelte/transition';
 	import { pageName } from '../../stores/admin';
 	import { parseDate } from '$lib/date.js'
 	export let recordList
-
-	// console.log(recordList)
-
-	
 
 	onMount(() => {
 		pageName.update(() => document.title);
@@ -72,30 +69,32 @@
 	<title>Respon</title>
 </svelte:head>
 
-<!-- Table -->
-<div class="w-full overflow-hidden rounded-lg shadow-xs">
-	<div class="w-full overflow-x-auto">
-		{#if recordList}
-		<table class="w-full whitespace-no-wrap border border-neutral-200">
-			<thead>
-				<tr
-					class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800"
-				>
-					<th class="px-4 py-3">Respon Terbaru</th>
-					<th class="px-4 py-3">Form Monitoring</th>
-					<th class="px-4 py-3">Tanggal</th>
-				</tr>
-			</thead>
-			<tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
-				{#each recordList as record}
-				<tr class="text-gray-700 dark:text-gray-400">
-					<td class="px-4 py-3 text-sm"><a href="/admin/pasien/{ record.user }"><p class="font-semibold">{ record.user }</p></a></td>
-					<td class="px-4 py-3 text-sm">{ record.qs_code }</td>
-					<td class="px-4 py-3 text-sm">{ parseDate(record.submit_time) }</td>
-				</tr>
-				{/each}
-			</tbody>
-		</table>
-		{/if}
+<div in:fade={{delay: 500, duration: 500}} out:fade|local={{duration: 500}}>
+	<!-- Table -->
+	<div class="w-full overflow-hidden rounded-lg shadow-xs">
+		<div class="w-full overflow-x-auto">
+			{#if recordList}
+			<table class="w-full whitespace-no-wrap border border-neutral-200">
+				<thead>
+					<tr
+						class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800"
+					>
+						<th class="px-4 py-3">Respon Terbaru</th>
+						<th class="px-4 py-3">Form Monitoring</th>
+						<th class="px-4 py-3">Tanggal</th>
+					</tr>
+				</thead>
+				<tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
+					{#each recordList as record}
+					<tr class="text-gray-700 dark:text-gray-400">
+						<td class="px-4 py-3 text-sm"><a href="/admin/pasien/{ record.user }"><p class="font-semibold">{ record.user }</p></a></td>
+						<td class="px-4 py-3 text-sm">{ record.qs_code }</td>
+						<td class="px-4 py-3 text-sm">{ parseDate(record.submit_time) }</td>
+					</tr>
+					{/each}
+				</tbody>
+			</table>
+			{/if}
+		</div>
 	</div>
 </div>

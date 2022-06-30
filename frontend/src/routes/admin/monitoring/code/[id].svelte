@@ -1,5 +1,6 @@
 <script>
 	import { goto } from '$app/navigation';
+	import { fade } from 'svelte/transition';
 	import { onMount } from 'svelte';
 	import { pageName } from '../../../../stores/admin.js';
 
@@ -85,6 +86,7 @@
 	<title>{ monit.name }</title>
 </svelte:head>
 
+<div in:fade={{delay: 500, duration: 500}} out:fade|local={{duration: 500}}>
 <!-- Cards -->
 <div class="grid gap-6 mb-8 md:grid-cols-2">
 	<!-- Total questionnaire card -->
@@ -312,4 +314,5 @@
 			</div>
 		</div>
 	</div>
+</div>
 </div>
