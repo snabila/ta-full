@@ -4,6 +4,7 @@
 	import { ScaleOut } from 'svelte-loading-spinners'
 	import Sidebar from '../../components/admin/sidebar.svelte';
 	import Header from '../../components/admin/header.svelte';
+	import {page} from '$app/stores'
 
 	let spinner
     onMount(() => {
@@ -19,13 +20,17 @@
 </div>
 {/if}
 
-<div class="flex h-screen bg-gray-50 dark:bg-gray-900">
+<div class="flex h-screen bg-gray-50 dark:bg-gray-900" in:fade={{delay:500}} out:fade>
 	<Sidebar />
 	<div class="flex flex-col flex-1 w-full">
 		<Header />
 		<main class="h-full overflow-y-auto">
 			<div class="container px-6 mx-auto grid" >
+				<!-- {#key page}
+				<div in:fade|local={{delay: 500, duration: 500}} out:fade|local={{duration: 500}}> -->
 				<slot />
+				<!-- </div>
+				{/key} -->
 			</div>	
 		</main>
 	</div>

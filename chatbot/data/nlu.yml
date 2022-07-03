@@ -82,6 +82,7 @@ nlu:
       - apa yang bisa saya lakukan?
       - fungsimu buat apa?
       - gunamu apa?
+      - fungsi
 
   - intent: pilih_feedback
     examples: |

@@ -95,13 +95,28 @@ rules:
     steps:
       - action: utter_monit
       - intent: monit_pilih_hapus
-      - action: action_monit_hapus_list
+      - action: action_monit_list
       - action: monit_form
       - active_loop: monit_form
       - active_loop: null
       - slot_was_set:
           - requested_slot: null
       - action: action_monit_hapus_act
+      - action: utter_bantu_lagi
+
+  # # monit isi
+  - rule: monit isi
+    steps:
+      - action: utter_monit
+      - intent: monit_pilih_isi
+      - action: action_monit_list
+      - action: monit_form
+      - active_loop: monit_form
+      - active_loop: monit_form
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: action_monit_isi
       - action: utter_bantu_lagi
 
   # disease info

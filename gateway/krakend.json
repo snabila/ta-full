@@ -16,7 +16,9 @@
           "encoding": "json",
           "sd": "static",
           "method": "POST",
-          "host": ["http://service-user:8003"],
+          "host": [
+            "http://service-user:8003"
+          ],
           "disable_host_sanitize": false
         }
       ],
@@ -32,12 +34,16 @@
           "encoding": "json",
           "sd": "static",
           "method": "POST",
-          "host": ["http://service-user:8003"],
+          "host": [
+            "http://service-user:8003"
+          ],
           "disable_host_sanitize": false
         }
       ],
       "timeout": "5000ms",
-      "input_headers": ["*"]
+      "input_headers": [
+        "*"
+      ]
     },
     {
       "endpoint": "/auth/user",
@@ -46,14 +52,18 @@
       "backend": [
         {
           "url_pattern": "/api/user",
-          "encoding": "json",
+          "encoding": "no-op",
           "sd": "static",
           "method": "GET",
-          "host": ["http://service-user:8003"],
+          "host": [
+            "http://service-user:8003"
+          ],
           "disable_host_sanitize": false
         }
       ],
-      "input_headers": ["*"]
+      "input_headers": [
+        "*"
+      ]
     },
     {
       "endpoint": "/auth/logout",
@@ -65,24 +75,33 @@
           "encoding": "no-op",
           "sd": "static",
           "method": "POST",
-          "host": ["http://service-user:8003"],
+          "host": [
+            "http://service-user:8003"
+          ],
           "disable_host_sanitize": false
         }
       ],
-      "input_headers": ["Access-Control-Allow-Origin", "Cookie"]
+      "input_headers": [
+        "Access-Control-Allow-Origin",
+        "Cookie"
+      ]
     },
     {
       "endpoint": "/auth/user/{username}",
       "method": "GET",
       "output_encoding": "no-op",
-      "input_headers": ["Cookie"],
+      "input_headers": [
+        "Cookie"
+      ],
       "backend": [
         {
           "url_pattern": "/api/user/{username}",
           "encoding": "no-op",
           "sd": "static",
           "method": "GET",
-          "host": ["http://service-user:8003"],
+          "host": [
+            "http://service-user:8003"
+          ],
           "disable_host_sanitize": false
         }
       ]
@@ -97,7 +116,9 @@
           "encoding": "no-op",
           "sd": "static",
           "method": "POST",
-          "host": ["http://service-monitoring:8000"],
+          "host": [
+            "http://service-monitoring:8000"
+          ],
           "disable_host_sanitize": false
         }
       ],
@@ -107,14 +128,18 @@
       "endpoint": "/monit/code/{code}",
       "method": "GET",
       "output_encoding": "no-op",
-      "input_headers": ["Cookie"],
+      "input_headers": [
+        "Cookie"
+      ],
       "backend": [
         {
           "url_pattern": "/questionare/{code}",
           "encoding": "no-op",
           "sd": "static",
           "method": "GET",
-          "host": ["http://service-monitoring:8000"],
+          "host": [
+            "http://service-monitoring:8000"
+          ],
           "disable_host_sanitize": false
         }
       ]
@@ -134,11 +159,15 @@
           "encoding": "no-op",
           "sd": "static",
           "method": "GET",
-          "host": ["http://service-monitoring:8000"],
+          "host": [
+            "http://service-monitoring:8000"
+          ],
           "disable_host_sanitize": false
         }
       ],
-      "input_headers": ["Cookie"]
+      "input_headers": [
+        "Cookie"
+      ]
     },
     {
       "endpoint": "/monit",
@@ -150,7 +179,9 @@
           "encoding": "no-op",
           "sd": "static",
           "method": "GET",
-          "host": ["http://service-monitoring:8000"],
+          "host": [
+            "http://service-monitoring:8000"
+          ],
           "disable_host_sanitize": false
         }
       ]
@@ -165,11 +196,15 @@
           "encoding": "no-op",
           "sd": "static",
           "method": "PUT",
-          "host": ["http://service-user:8003"],
+          "host": [
+            "http://service-user:8003"
+          ],
           "disable_host_sanitize": false
         }
       ],
-      "input_headers": ["Cookie"]
+      "input_headers": [
+        "*"
+      ]
     },
     {
       "endpoint": "/monit/host-pull",
@@ -181,11 +216,15 @@
           "encoding": "no-op",
           "sd": "static",
           "method": "PUT",
-          "host": ["http://service-user:8003"],
+          "host": [
+            "http://service-user:8003"
+          ],
           "disable_host_sanitize": false
         }
       ],
-      "input_headers": ["Cookie"]
+      "input_headers": [
+        "*"
+      ]
     },
     {
       "endpoint": "/monit/code/{code}",
@@ -197,11 +236,15 @@
           "encoding": "no-op",
           "sd": "static",
           "method": "DELETE",
-          "host": ["http://service-monitoring:8000"],
+          "host": [
+            "http://service-monitoring:8000"
+          ],
           "disable_host_sanitize": false
         }
       ],
-      "input_headers": ["Cookie"]
+      "input_headers": [
+        "Cookie"
+      ]
     },
     {
       "endpoint": "/monit/code/{code}",
@@ -213,11 +256,15 @@
           "encoding": "no-op",
           "sd": "static",
           "method": "PUT",
-          "host": ["http://service-monitoring:8000"],
+          "host": [
+            "http://service-monitoring:8000"
+          ],
           "disable_host_sanitize": false
         }
       ],
-      "input_headers": ["Cookie"]
+      "input_headers": [
+        "Cookie"
+      ]
     },
     {
       "endpoint": "/record",
@@ -229,11 +276,15 @@
           "encoding": "no-op",
           "sd": "static",
           "method": "POST",
-          "host": ["http://service-monitoring:8000"],
+          "host": [
+            "http://service-monitoring:8000"
+          ],
           "disable_host_sanitize": false
         }
       ],
-      "input_headers": ["Cookie"]
+      "input_headers": [
+        "Cookie"
+      ]
     },
     {
       "endpoint": "/monit/subs-add",
@@ -245,11 +296,15 @@
           "encoding": "no-op",
           "sd": "static",
           "method": "PUT",
-          "host": ["http://service-user:8003"],
+          "host": [
+            "http://service-user:8003"
+          ],
           "disable_host_sanitize": false
         }
       ],
-      "input_headers": ["Cookie"]
+      "input_headers": [
+        "*"
+      ]
     },
     {
       "endpoint": "/monit/subs-pull",
@@ -261,11 +316,15 @@
           "encoding": "no-op",
           "sd": "static",
           "method": "PUT",
-          "host": ["http://service-user:8003"],
+          "host": [
+            "http://service-user:8003"
+          ],
           "disable_host_sanitize": false
         }
       ],
-      "input_headers": ["Cookie"]
+      "input_headers": [
+        "*"
+      ]
     },
     {
       "endpoint": "/record",
@@ -277,11 +336,15 @@
           "encoding": "no-op",
           "sd": "static",
           "method": "GET",
-          "host": ["http://service-monitoring:8000"],
+          "host": [
+            "http://service-monitoring:8000"
+          ],
           "disable_host_sanitize": false
         }
       ],
-      "input_headers": ["Cookie"]
+      "input_headers": [
+        "Cookie"
+      ]
     },
     {
       "endpoint": "/record/code/{code}",
@@ -293,24 +356,32 @@
           "encoding": "no-op",
           "sd": "static",
           "method": "GET",
-          "host": ["http://service-monitoring:8000"],
+          "host": [
+            "http://service-monitoring:8000"
+          ],
           "disable_host_sanitize": false
         }
       ],
-      "input_headers": ["Cookie"]
+      "input_headers": [
+        "Cookie"
+      ]
     },
     {
       "endpoint": "/record/code/{code}/{uname}",
       "method": "GET",
       "output_encoding": "no-op",
-      "input_headers": ["Cookie"],
+      "input_headers": [
+        "Cookie"
+      ],
       "backend": [
         {
           "url_pattern": "/records/code/{code}/{uname}",
           "encoding": "no-op",
           "sd": "static",
           "method": "GET",
-          "host": ["http://service-monitoring:8000"],
+          "host": [
+            "http://service-monitoring:8000"
+          ],
           "disable_host_sanitize": false
         }
       ]
@@ -319,7 +390,10 @@
       "endpoint": "/infod",
       "method": "GET",
       "output_encoding": "no-op",
-      "input_query_strings": ["skip", "limit"],
+      "input_query_strings": [
+        "skip",
+        "limit"
+      ],
       "backend": [
         {
           "url_pattern": "/diseases",
@@ -327,23 +401,31 @@
           "sd": "static",
           "method": "GET",
           "disable_host_sanitize": false,
-          "host": ["http://service-disease-info:8002"]
+          "host": [
+            "http://service-disease-info:8002"
+          ]
         }
       ],
-      "input_headers": ["Cookie"]
+      "input_headers": [
+        "Cookie"
+      ]
     },
     {
       "endpoint": "/infod/id/{id}",
       "method": "GET",
       "output_encoding": "no-op",
-      "input_headers": ["Cookie"],
+      "input_headers": [
+        "Cookie"
+      ],
       "backend": [
         {
           "url_pattern": "/diseases/id/{id}",
           "encoding": "no-op",
           "sd": "static",
           "method": "GET",
-          "host": ["http://service-disease-info:8002"],
+          "host": [
+            "http://service-disease-info:8002"
+          ],
           "disable_host_sanitize": false
         }
       ]
@@ -352,14 +434,18 @@
       "endpoint": "/infod/n/{name}",
       "method": "GET",
       "output_encoding": "no-op",
-      "input_headers": ["Cookie"],
+      "input_headers": [
+        "Cookie"
+      ],
       "backend": [
         {
           "url_pattern": "/diseases/name/{name}",
           "encoding": "no-op",
           "sd": "static",
           "method": "GET",
-          "host": ["http://service-disease-info:8002"],
+          "host": [
+            "http://service-disease-info:8002"
+          ],
           "disable_host_sanitize": false
         }
       ]
@@ -374,7 +460,63 @@
           "encoding": "no-op",
           "sd": "static",
           "method": "POST",
-          "host": ["http://service-es:8001"],
+          "host": [
+            "http://service-es:8001"
+          ],
+          "disable_host_sanitize": false
+        }
+      ]
+    },
+    {
+      "endpoint": "/monit/subs-pull-all",
+      "method": "PUT",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/subs-pull-all",
+          "encoding": "no-op",
+          "sd": "static",
+          "method": "PUT",
+          "host": [
+            "http://service-user:8003"
+          ],
+          "disable_host_sanitize": false
+        }
+      ],
+      "input_headers": [
+        "*"
+      ]
+    },
+    {
+      "endpoint": "/monit/code/{code}/push",
+      "method": "PUT",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/questionare/{code}/push",
+          "encoding": "no-op",
+          "sd": "static",
+          "method": "PUT",
+          "host": [
+            "http://service-monitoring:8000"
+          ],
+          "disable_host_sanitize": false
+        }
+      ]
+    },
+    {
+      "endpoint": "/monit/code/{code}/pull",
+      "method": "PUT",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/questionare/{code}/pull",
+          "encoding": "no-op",
+          "sd": "static",
+          "method": "PUT",
+          "host": [
+            "http://service-monitoring:8000"
+          ],
           "disable_host_sanitize": false
         }
       ]

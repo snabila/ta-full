@@ -319,4 +319,28 @@ router.put("/subs-pull", async (req, res) => {
   }
 });
 
+// remove all occurences of monitoring in subscribed (when a doctor's account deleted a monitoring form)
+router.put("/subs-pull-all", async (req, res) => {
+  try {
+    // console.log(req.headers);
+    const user = await User.updateMany(
+      {},
+      {
+        $pull: {
+          subscribed: req.body.code,
+        },
+      }
+    );
+    res.send({
+      message:
+        "Monitoring with code " + req.body.code + " successfully deleted.",
+    });
+  } catch (e) {
+    console.log(e);
+    res.send({
+      message: "Error",
+    });
+  }
+});
+
 module.exports = router;

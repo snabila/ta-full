@@ -4,8 +4,8 @@
 	import { onMount } from 'svelte';
 	import { pageName } from '../../../../stores/admin.js';
 
-	export let monit
-	// console.log(monit)
+	export let monit, recordN
+	// console.log(monit.participants)
 
 	onMount(() => {
 		pageName.update(() => document.title);
@@ -24,6 +24,13 @@
                 "code": monit.code,
             })
 		})
+		const subspullall = await fetch('http://localhost:8080/monit/subs-pull-all', {
+			method: 'PUT',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({
+				"code": monit.code
+			})
+		})
 		await goto('/admin/monitoring')
 	}
 </script>
@@ -34,12 +41,8 @@
 			headers: {'Content-Type': 'application/json'},
 			credentials: 'include',
 		})
-		
-		// console.log(params.id)
-
 		let data = await response.json()
 		let uname = data.username
-		// console.log(uname)
 		
 		if (response.status == 200) {
 			if (data.role === 'dokter'){
@@ -55,30 +58,39 @@
 							error: 'Akun anda tidak memiliki akses terhadap halaman ini.'
 						}
 					}
-					// console.log(data)
+
+					const records = await fetch('http://localhost:8080/record/code/' + params.id)
+					const temp2 = await records.json()
+
+					let recordN = 0
+					if (temp2.code == 200) {
+						recordN = temp2.data[0].length
+					}
+					
 					return {
 						props: {
-							monit: data
+							monit: data,
+							recordN: recordN
 						}
 					}
-				} else {
-					return {
-						status: temp.code,
-						error: temp.message
-					}
-				}
-			} else {
+				} 
 				return {
-					status: 403,
-					error: 'Akun anda tidak memiliki akses terhadap halaman ini.'
+					status: temp.code,
+					error: temp.message
 				}
-			}
-		} else {
+				
+			} 
 			return {
-				status: 302,
-				redirect: '/login'
-			}	
+				status: 403,
+				error: 'Akun anda tidak memiliki akses terhadap halaman ini.'
+			}
+			
 		}
+		return {
+			status: 302,
+			redirect: '/login'
+		}	
+		
 	}
 </script>
 
@@ -109,7 +121,12 @@
 		</div>
 		<div>
 			<p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">Jumlah Pasien</p>
-			<p class="text-lg font-semibold text-gray-700 dark:text-gray-200">7</p>
+			<p class="text-lg font-semibold text-gray-700 dark:text-gray-200">
+				{#if monit.participants}
+					{ monit.participants.length }
+				{:else} 0
+				{/if}
+			</p>
 		</div>
 	</div>
 
@@ -135,7 +152,7 @@
 		</div>
 		<div>
 			<p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">Total Respon</p>
-			<p class="text-lg font-semibold text-gray-700 dark:text-gray-200">27</p>
+			<p class="text-lg font-semibold text-gray-700 dark:text-gray-200">{ recordN }</p>
 		</div>
 	</div>
 </div>
@@ -256,61 +273,81 @@
 				<!-- Header -->
 				<div class="flex justify-between mb-4">
 					<p class="font-semibold">Total</p>
-					<p class="font-semibold">24</p>
+					<p class="font-semibold">
+						{#if monit.participants}
+							{ monit.participants.length }
+						{:else} 0
+						{/if}
+					</p>
 				</div>
 
 				<hr />
 
 				<!-- List pasien -->
-				<div class="flex justify-between items-center mt-4">
-					<div class="flex items-center text-sm">
-						<!-- Avatar with inset shadow -->
-						<div class="relative hidden w-8 h-8 mr-3 rounded-full xl:block">
-							<img
-								class="object-cover w-full h-full rounded-full"
-								src="https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjE3Nzg0fQ"
-								alt=""
-								loading="lazy"
-							/>
-							<div class="absolute inset-0 rounded-full shadow-inner" aria-hidden="true" />
-						</div>
-						<div>
-							<p class="font-semibold">Hans Burger</p>
-						</div>
+				{#if monit.participants}
+					{#if monit.participants.length > 5}
+						{#each {length: 4} as _, i}
+							<div class="flex justify-between items-center mt-4">
+								<a href="/admin/pasien/{ monit.participants[i] }" class="font-semibold">{ monit.participants[i] }</a>
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									class="h-4 w-4 ml-1"
+									fill="none"
+									viewBox="0 0 24 24"
+									stroke="currentColor"
+									stroke-width="2"
+								>
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+									/>
+								</svg>
+							</div>
+							<button class="mt-6 flex items-center justify-center w-full text-purple-600">
+								View All
+								<span>
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										class="h-5 w-5 ml-2"
+										viewBox="0 0 20 20"
+										fill="currentColor"
+									>
+										<path
+											fill-rule="evenodd"
+											d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+											clip-rule="evenodd"
+										/>
+									</svg>
+								</span>
+							</button>
+						{/each}
+					{:else}
+						{#each monit.participants as patient}
+							<div class="flex justify-between items-center mt-4">
+								<a href="/admin/pasien/{ patient }" class="font-semibold">{ patient }</a>
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									class="h-4 w-4 ml-1"
+									fill="none"
+									viewBox="0 0 24 24"
+									stroke="currentColor"
+									stroke-width="2"
+								>
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+									/>
+								</svg>
+							</div>
+						{/each}
+					{/if}
+				{:else}
+					<div class="text-center italic text-violet-600 bg-violet-100 py-2 px-1 mt-4 w-full rounded-md">
+						<p>Belum ada pasien yang terdaftar pada monitoring ini.</p>
 					</div>
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						class="h-4 w-4 ml-1"
-						fill="none"
-						viewBox="0 0 24 24"
-						stroke="currentColor"
-						stroke-width="2"
-					>
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-						/>
-					</svg>
-				</div>
-
-				<button class="mt-6 flex items-center justify-center w-full text-purple-600">
-					View All
-					<span>
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							class="h-5 w-5 ml-2"
-							viewBox="0 0 20 20"
-							fill="currentColor"
-						>
-							<path
-								fill-rule="evenodd"
-								d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-								clip-rule="evenodd"
-							/>
-						</svg>
-					</span>
-				</button>
+				{/if}
 			</div>
 		</div>
 	</div>

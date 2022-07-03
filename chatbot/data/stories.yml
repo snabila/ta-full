@@ -103,23 +103,39 @@ stories:
 
   # monitoring
   # # isi data
-  # - story: tanya fungsi monitoring - isi
-  #   steps:
-  #     - intent: fungsi_bot
-  #     - action: utter_fungsi
-  #     - intent: pilih_monitoring
-  #     - action: utter_monit
-  #     - intent: monit_pilih_isi
-  #     - action: utter_monit_kode
+  - story: tanya fungsi monitoring - isi
+    steps:
+      - intent: fungsi_bot
+      - action: utter_fungsi
+      - intent: pilih_monitoring
+      - action: utter_monit
+      - intent: monit_pilih_isi
+      - action: action_monit_list
+      - action: monit_form
+      - active_loop: monit_form
+      - active_loop: monit_form
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: action_monit_isi
+      - action: utter_bantu_lagi
 
-  # - story: greet monitoring - isi
-  #   steps:
-  #     - intent: greet
-  #     - action: utter_greet
-  #     - intent: pilih_monitoring
-  #     - action: utter_monit
-  #     - intent: monit_pilih_isi
-  #     - action: utter_monit_kode
+  - story: greet monitoring - isi
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: pilih_monitoring
+      - action: utter_monit
+      - intent: monit_pilih_isi
+      - action: action_monit_list
+      - action: monit_form
+      - active_loop: monit_form
+      - active_loop: monit_form
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: action_monit_isi
+      - action: utter_bantu_lagi
 
   # # daftar kode
   - story: tanya fungsi monitoring - daftar
@@ -160,7 +176,7 @@ stories:
       - intent: pilih_monitoring
       - action: utter_monit
       - intent: monit_pilih_hapus
-      - action: action_monit_hapus_list
+      - action: action_monit_list
       - action: monit_form
       - active_loop: monit_form
       - active_loop: null
@@ -176,7 +192,7 @@ stories:
       - intent: pilih_monitoring
       - action: utter_monit
       - intent: monit_pilih_hapus
-      - action: action_monit_hapus_list
+      - action: action_monit_list
       - action: monit_form
       - active_loop: monit_form
       - active_loop: null
@@ -184,12 +200,3 @@ stories:
           - requested_slot: null
       - action: action_monit_hapus_act
       - action: utter_bantu_lagi
-
-  # - story: greet monitoring - hapus
-  #   steps:
-  #     - intent: greet
-  #     - action: utter_greet
-  #     - intent: pilih_monitoring
-  #     - action: utter_monit
-  #     - intent: monit_pilih_hapus
-  #     - action: utter_monit_kode

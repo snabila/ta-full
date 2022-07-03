@@ -1,7 +1,7 @@
 <script>
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
-	import { goto } from '$app/navigation';
+	import NoEntry from '../../../components/admin/NoEntry.svelte';
 	import { pageName } from '../../../stores/admin.js';
 
 	onMount(async () => {
@@ -10,7 +10,7 @@
 
 	export let monitList
 
-	console.log(monitList[2].monit.participants)
+	console.log(monitList)
 </script>
 
 <script context="module">
@@ -21,7 +21,6 @@
 		})
 
 		let data = await response.json()
-		// console.log(data.value)
 		
 		if (response.status == 200) {
 			if (data.role === 'dokter'){
@@ -37,8 +36,6 @@
 					const temp2 = await records.json()
 					let recordN
 					if (temp2.code == 200) {
-						// const record = temp2.data[0].
-						// console.log(temp2.data[0].length)
 						recordN = temp2.data[0].length
 					} else {
 						recordN = 0
@@ -46,13 +43,6 @@
 
 					monitList.push({ monit: item, recordN: recordN})
 				}
-				// const response = await fetch('http://localhost:8080/record/code/' + params.id)
-				// 	const temp2 = await response.json()
-
-				// 	if (temp2.code == 200) {
-				// 		// const record = temp2.data[0].
-				// 		console.log(temp2.data[0])
-				// 	}
 
 				return {
 					props: { monitList: monitList }
@@ -77,6 +67,8 @@
 </svelte:head>
 
 <div in:fade={{delay: 500, duration: 500}} out:fade|local={{duration: 500}}>
+	{#if monitList.length > 0}
+	<!-- Table -->
 	<div class="w-full overflow-hidden rounded-lg shadow-xs">
 		<div class="w-full overflow-x-auto">
 			<table class="w-full whitespace-no-wrap border border-neutral-200 table-fixed border-collapse">
@@ -107,4 +99,7 @@
 			</table>
 		</div>
 	</div>
+	{:else}
+		<NoEntry title='No entries' message="Anda belum memiliki monitoring apapun."/>
+	{/if}
 </div>

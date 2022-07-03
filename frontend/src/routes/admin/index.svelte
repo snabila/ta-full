@@ -1,5 +1,5 @@
 <script>
-	import { goto } from '$app/navigation';
+	import NoEntry from '../../components/admin/NoEntry.svelte';
 	import { fade } from 'svelte/transition';
 	import { onMount } from 'svelte';
 	import { pageName } from '../../stores/admin.js';
@@ -162,7 +162,7 @@
 	</div>
 
 	<!-- Table -->
-	{#if recordList}
+	{#if recordList.length > 0}
 		<div class="w-full overflow-hidden rounded-lg shadow-xs">
 			<div class="w-full overflow-x-auto">
 				<table class="w-full whitespace-no-wrap border border-neutral-200">
@@ -190,5 +190,7 @@
 				</table>
 			</div>
 		</div>
+	{:else}
+		<NoEntry title='No entries' message='Monitoring anda belum memiliki respon, undang pasien anda dengan membagikan kode monitoring anda'/>
 	{/if}
 </div>

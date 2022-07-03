@@ -1,4 +1,5 @@
 <script context="module">
+    import NoEntry from '../components/admin/NoEntry.svelte';
     export function load({ error, status }) {
         return {
             props: {
@@ -35,11 +36,13 @@
 {/if}
 
 <main class="h-screen max-h-screen bg-gray-50" out:fade>
-    <div class="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="min-h-full flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div class="max-w-md w-full text-center">
+            <a href="/" class="block text-violet-600 text-sm mb-2">Kembali</a>
             <h1 class="mb-4 text-9xl font-extrabold text-gray-300">{status}</h1>
-            <p class="mb-6">{message}</p>
-            <a href="/" class="text-violet-600 text-sm">Kembali</a>
+            <p class="mb-6 text-neutral-600">{message}</p>
         </div>
+
+        <img src="/img/empty500.png" alt="No entries" class="w-max">
     </div>
 </main>

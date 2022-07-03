@@ -93,8 +93,10 @@ responses:
 
 actions:
   - action_monit_daftar
-  - action_monit_hapus_list
+  - action_monit_list
   - action_monit_hapus_act
+  - action_monit_isi
+  - action_monit_isi_form
   - action_disease_info
   - action_es_covid
   - action_opini_bantu
@@ -104,6 +106,10 @@ forms:
   monit_form:
     required_slots:
       - monit_kode
+
+  monit_isi_form:
+    required_slots:
+      - monit_isi_loop
 
   disease_info_form:
     required_slots:
@@ -137,6 +143,15 @@ slots:
         conditions:
           - active_loop: monit_form
             requested_slot: monit_kode
+
+  monit_isi_loop:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: monit_isi_form
+            requested_slot: monit_isi_loop
 
   penyakit_apa:
     type: text

@@ -32,7 +32,7 @@
 	let formData = {
 		"name": monit.name,
 		"desc": monit.desc,
-		"code": codeRest,
+		// "code": codeRest,
 		"notif": monit.notif,
 	}
 
@@ -45,7 +45,7 @@
                 "name": formData.name,
                 "host": monit.host,
                 "desc": formData.desc,
-                "code": monit.host + '-' + formData.code,
+                // "code": monit.host + '-' + formData.code,
 				"notif": formData.notif,
 				"questions": $storeFields
             })
@@ -55,7 +55,7 @@
 		// formData.host = uname
 		// formData.code = uname + '-' + formData.code
 		// console.log(response)
-		await goto('/admin/monitoring/code/' + monit.host + '-' + formData.code)
+		await goto('/admin/monitoring/code/' + monit.code)
 	}
 </script>
 
@@ -143,15 +143,15 @@
 					<!-- Kode Form -->
 					<div class="mb-7">
 						<label class="block text-sm mb-3 font-semibold" for="code"> Kode </label>
-						{monit.host} - 
-						<input
+						{monit.host}-{ codeRest }
+						<!-- <input
 							class="mt-1 text-sm border rounded-md dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none dark:text-gray-300 form-input py-2 px-3"
 							placeholder="Kode form"
 							type="text"
 							id="code"
 							bind:value={formData.code}
 							required
-						/>
+						/> -->
 					</div>
 
 					<!-- Deskripsi -->

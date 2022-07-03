@@ -108,7 +108,7 @@
 </div>
 {/if}
 
-<div class="bg-gray-50 max-h-screen h-screen w-screen overflow-y-scroll" out:fade>
+<div class="bg-gray-50 max-h-screen h-screen w-screen overflow-y-scroll" in:fade={{delay:500}} out:fade>
 	<div class="max-w-2xl mx-auto">
 		<header class="mx-auto px-3 max-w-2xl flex items-center justify-between">
 			{#if auth}

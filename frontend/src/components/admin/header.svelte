@@ -1,6 +1,6 @@
 <script>
-	import { pageName } from '../../stores/admin.js';
-
+	import { pageName, sideMenuOpen } from '../../stores/admin.js';
+	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 
 	let show = false; // menu state
@@ -10,6 +10,12 @@
 
 	pageName.subscribe((value) => {
 		displayPageName = value;
+	});
+
+	let isOpen
+
+	sideMenuOpen.subscribe((value) => {
+		isOpen = value;
 	});
 
 	onMount(() => {
@@ -35,6 +41,25 @@
 			document.removeEventListener('keyup', handleEscape, false);
 		};
 	});
+	
+	const logout = async () => {
+		await fetch('http://localhost:8080/auth/logout', {
+			method: 'POST',
+			headers: {'Content-Type': 'application/json'},
+			credentials: 'include',
+		})
+		// auth = false
+		await goto('/login')
+	}
+
+	function mobileMenuOpen() {
+		if (isOpen) {
+			$sideMenuOpen = false
+		}
+		else {
+			$sideMenuOpen = true
+		}
+	}
 </script>
 
 <header class="z-10 md:py-4 py-3">
@@ -47,6 +72,7 @@
 			<button
 				class="p-1 mr-5 -ml-1 rounded-md md:hidden focus:outline-none focus:shadow-outline-purple"
 				aria-label="Menu"
+				on:click={ mobileMenuOpen }
 			>
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
@@ -73,12 +99,9 @@
 					aria-haspopup="true"
 					on:click={() => (show = !show)}
 				>
-					<img
-						class="object-cover w-8 h-8 rounded-full"
-						src="https://images.unsplash.com/photo-1502378735452-bc7d86632805?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&s=aa3a807e1bbdfd4364d1f449eaa96d82"
-						alt=""
-						aria-hidden="true"
-					/>
+					<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
+						<path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clip-rule="evenodd" />
+					</svg>
 				</button>
 
 				{#if show}
@@ -90,7 +113,7 @@
 							class="absolute right-0 w-56 p-2 mt-2 space-y-2 text-gray-600 bg-white border border-gray-100 rounded-md shadow-md dark:border-gray-700 dark:text-gray-300 dark:bg-gray-700"
 							aria-label="submenu"
 						>
-							<li class="flex">
+							<!-- <li class="flex">
 								<a
 									class="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
 									href="/"
@@ -132,11 +155,12 @@
 									</svg>
 									<span>Settings</span>
 								</a>
-							</li>
+							</li> -->
 							<li class="flex">
-								<a
+								<button
 									class="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
 									href="/"
+									on:click={logout}
 								>
 									<svg
 										class="w-4 h-4 mr-3"
@@ -153,7 +177,7 @@
 										/>
 									</svg>
 									<span>Log out</span>
-								</a>
+								</button>
 							</li>
 						</ul>
 					</div>

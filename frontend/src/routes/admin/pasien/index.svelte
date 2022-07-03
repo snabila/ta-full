@@ -1,7 +1,10 @@
 <script>
 	import { onMount } from 'svelte';
+	import NoEntry from '../../../components/admin/NoEntry.svelte';
 	import { fade } from 'svelte/transition';
 	import { pageName } from '../../../stores/admin.js';
+	export let patient
+	console.log(patient.length)
 
 	onMount(() => {
 		pageName.update(() => document.title);
@@ -34,37 +37,56 @@
 						}
 					}
 				}
-				console.log(patientList)
+				// console.log(hosting)
+				// console.log(patientList)
 				if (patientList) {
 					patientList = [...new Set(patientList)]
 					for (let i = 0; i < patientList.length; i++) {
+						let monit = 0
+						let record = 0
 						const patient = await fetch('http://localhost:8080/auth/user/' + patientList[i], {
 							headers: {'Content-Type': 'application/json', 'If-None-Match': '*'},
 							credentials: 'include',
 						})
 						const temp = await patient.json()
-						console.log(temp)
+						// console.log(temp.subscribed)
 						
-						// if (patient.code == 200) {
-						// 	const temp = patient.json()
-						// 	console.log(temp.username)
-						// }
+						if (temp.subscribed) {
+							for (let i = 0; i < temp.subscribed.length; i++) {
+								if (hosting.includes(temp.subscribed[i])) {
+									const records = await fetch('http://localhost:8080/record/code/' + temp.subscribed[i] + '/' + temp.username)
+									const recordN = await records.json()
+									if (recordN.code == 200){
+										record += recordN.data[0].length
+									}
+									monit += 1
+								}
+							}
+						}
+
+						patientEx.push({
+							uname: temp.username,
+							monit: monit,
+							record: record
+						})
 					}
 				}
 				// console.log(hosting)
-				return {}
-			} else {
 				return {
-					status: 403,
-					error: 'Akun anda tidak memiliki akses terhadap halaman ini.'
+					props: {patient: patientEx}
 				}
 			}
-		} else {
 			return {
-				status: 302,
-				redirect: '/login'
-			}	
+				status: 403,
+				error: 'Akun anda tidak memiliki akses terhadap halaman ini.'
+			}
+			
 		}
+		return {
+			status: 302,
+			redirect: '/login'
+		}	
+		
 	}
 </script>
 
@@ -73,6 +95,7 @@
 </svelte:head>
 
 <div in:fade={{delay: 500, duration: 500}} out:fade|local={{duration: 500}}>
+	{#if patient.length > 0}
 	<!-- Table -->
 	<div class="w-full overflow-hidden rounded-lg shadow-xs">
 		<div class="w-full overflow-x-auto">
@@ -84,34 +107,23 @@
 						<th class="px-4 py-3">Nama</th>
 						<th class="px-4 py-3">Jumlah Form</th>
 						<th class="px-4 py-3">Respon</th>
-						<th class="px-4 py-3">Tanggal</th>
 					</tr>
 				</thead>
 				<tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
+					{#each patient as p}
 					<tr class="text-gray-700 dark:text-gray-400">
-						<td class="px-4 py-5">
-							<div class="flex items-center text-sm">
-								<!-- Avatar with inset shadow -->
-								<div class="relative hidden w-8 h-8 mr-3 rounded-full md:block">
-									<img
-										class="object-cover w-full h-full rounded-full"
-										src="https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjE3Nzg0fQ"
-										alt=""
-										loading="lazy"
-									/>
-									<div class="absolute inset-0 rounded-full shadow-inner" aria-hidden="true" />
-								</div>
-								<div>
-									<a href="/admin/patients/id"><p class="font-semibold">John Doe</p></a>
-								</div>
-							</div>
+						<td class="px-4 py-3">
+							<a href="/admin/pasien/{ p.uname }"><p class="font-semibold">{ p.uname }</p></a>
 						</td>
-						<td class="px-4 py-5 text-sm">12</td>
-						<td class="px-4 py-5 text-sm">24</td>
-						<td class="px-4 py-5 text-sm"> 6/10/2020 </td>
+						<td class="px-4 py-5 text-sm">{ p.monit }</td>
+						<td class="px-4 py-5 text-sm">{ p.record }</td>
 					</tr>
+					{/each}
 				</tbody>
 			</table>
 		</div>
 	</div>
+	{:else}
+		<NoEntry title='No entries' message='Belum ada pasien yang terdaftar pada monitoring anda. Undang pasien dengan membagikan kode monitoring anda'/>
+	{/if}
 </div>

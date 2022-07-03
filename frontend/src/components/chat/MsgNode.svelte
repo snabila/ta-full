@@ -6,9 +6,10 @@
 <div class="inline-flex mb-5 w-full">
     {#if objAttributes.type == 'bot'}
         <div class="mr-5">
-            <div class="first:opacity-100 h-10 w-10 bg-slate-900 " />
+            <img src="/img/bot40.png" alt="Bot">
+            <!-- <div class="first:opacity-100 h-10 w-10 bg-slate-900 " /> -->
         </div>
-        <div class="bg-white py-4 px-6 border-0 rounded-md drop-shadow-md">
+        <div class="bg-white py-4 px-6 border-0 rounded-md drop-shadow-md w-10/12">
             <p class="whitespace-pre-line">{objAttributes.msg}</p>
         </div>
     {:else}
