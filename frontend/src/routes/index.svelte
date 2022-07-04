@@ -76,6 +76,7 @@
 <script context="module">
 	export async function load({ fetch }) {
 		const response = await fetch('http://localhost:8080/auth/user', {
+			method: 'GET',
 			headers: {'Content-Type': 'application/json'},
 			credentials: 'include',
 		})

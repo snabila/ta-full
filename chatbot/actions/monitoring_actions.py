@@ -1,13 +1,16 @@
+from email import message
 from os import uname
 from typing import Any, Text, Dict, List
-# import config
+from datetime import datetime as dt
 import requests
+import json
 from rasa_sdk import Action, Tracker
 from rasa_sdk.forms import FormValidationAction
 from rasa.core.actions.action import ActionListen
 from rasa.core.actions.forms import FormAction
 from rasa_sdk.executor import CollectingDispatcher
-from rasa_sdk.events import AllSlotsReset, FollowupAction, SlotSet
+from rasa_sdk.events import AllSlotsReset, EventType
+from rasa_sdk.types import DomainDict
 
 # settings = config.Settings()
 
@@ -85,6 +88,7 @@ class ActionMonitHapusAct(Action):
 
         r = requests.put(url = 'http://localhost:8003/api/subs-pull', json = { 'code' : monit_kode, 'uname' : uname })
         r2 = requests.put(url = 'http://localhost:8080/monit/code/' + monit_kode + '/pull', json = { 'username' : uname })
+        r3 = requests.delete(url = 'http://localhost:8080/record/code/' + monit_kode + '/' + uname)
 
         if r.status_code == 200 :
             message = 'Anda berhasil membatalkan pendaftaran pada monitoring ' + monit_kode + '.' 
@@ -104,80 +108,126 @@ class ActionMonitIsi(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        global tes
-        tes = []
-        monit_kode = tracker.get_slot('monit_kode')
-        uname = tracker.sender_id
+        
+        # initialize disini biar gak kereset tiap nanya pertanyaan
+        global answers
+        answers = []
 
-        r = requests.get(url = 'http://localhost:8080/monit/code/' + monit_kode + '/q')
+        global codeFound
+        global qFound
 
+        global qLoop
+        qLoop = 1
+
+        # ambil kode monitoring dari form sebelumnya (monit_form)
+        global monit_kode_isi
+        monit_kode_isi = tracker.get_slot('monit_kode')
+
+        # get request buat dapet teks pertanyaannya
+        r = requests.get(url = 'http://localhost:8080/monit/code/' + monit_kode_isi + '/q')
+
+        # kalo nemu kode monitoringnya
         if (r.status_code == 200):
+            codeFound = True
+
+            # tes data pertanyaannya ada nggak
+            global questions
             questions = r.json()['data'][0]
+
+            # kalo ada set codeFound jadi true
             if (questions):
-                i = 0
-                message = 'Input :'
-
-                for question in questions:
-                    if (i > 1) : 
-                        tes.append(tracker.latest_message['text'])
-
-                    dispatcher.utter_message(text=question['question'])
-
-                    i += 1
-
-                    return [FollowupAction('action_monit_isi_form')]
-                    
-                    # return [FollowupAction(name = 'action_monit_isi_form')]
-                    # tes.append(tracker.latest_message['text'])
-                    # tes.append(tracker.get_slot('monit_isi_loop'))
-                    # SlotSet('monit_isi_loop', None)
-                tes.append(tracker.latest_message['text'])
-
-                for test in tes:
-                    message = message + '\n- ' + test
-                
-                dispatcher.utter_message(text=message)
+                qFound = True
+            else:
+                qFound = False
         else:
-            dispatcher.utter_message(text='Mohon maaf terjadi kesalahan pada server')
+            codeFound = False
 
         return [AllSlotsReset()]
 
-class ActionMonitIsiForm():
+class AskMonitIsiLoop(Action):
     def name(self) -> Text:
-        return "action_monit_isi_form"
+        return "action_ask_monit_isi_loop"
 
-    def requiredslot():
-        return ['monit_isi_loop']
+    def run(
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
+    ) -> List[EventType]:
+        dispatcher.utter_message(text=questions[qLoop-1]['question'])
+        # dispatcher.utter_message(text="What cuisine?")
+        return []
 
-    def submit():
-        return [SlotSet('monit_isi_loop', None), FollowupAction('action_monit_isi')]
-
-class ValidActionMonitIsiForm(FormValidationAction):
+class ValidateMonitIsiForm(FormValidationAction):
     def name(self) -> Text:
-        return "action_monit_isi_form_valid"
+        return "validate_monit_isi_form"
 
-    async def required_slots(
+    def validate_monit_isi_loop(
         self,
-        domain_slots: List[Text],
-        dispatcher: "CollectingDispatcher",
-        tracker: "Tracker",
-        domain: "DomainDict",
-    ) -> List[Text]:
-        monit_kode = tracker.get_slot('monit_kode')
-        r = requests.get(url = 'http://localhost:8080/monit/code/' + monit_kode + '/q')
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+    ) -> Dict[Text, Any]:
+        global qLoop
 
-        if (r.status_code == 200):
-            questions = r.json()['data'][0]
-            if (questions):
-                for question in questions:
-                    dispatcher.utter_message(text=question['question'])
-                    
-        additional_slots = ["outdoor_seating"]
+        if codeFound:
+            if qFound:
+                # if answers.length < questions.length:
+                # if qLoop == 0:
+                #     # dispatcher.utter_message(text=questions[qLoop]['question'])
+                #     qLoop += 1
+                #     return {'monit_isi_loop': None}
+                # elif qLoop > 0:
+                #     answers.append({
+                #         "q_id": questions[qLoop-1]['id'],
+                #         "answer": tracker.get_slot('monit_isi_loop')
+                #     })
+                #     # dispatcher.utter_message(text=questions[qLoop]['question'])
+                #     qLoop += 1
+                #     return {'monit_isi_loop': None}
+                if qLoop == len(questions):
+                    answers.append({
+                        "q_id": questions[qLoop-1]['id'],
+                        "answer": tracker.get_slot('monit_isi_loop')
+                    })
+                    return {'monit_isi_loop': slot_value}
+                else:
+                    answers.append({
+                        "q_id": questions[qLoop-1]['id'],
+                        "answer": tracker.get_slot('monit_isi_loop')
+                    })
+                    qLoop += 1
+                    return {'monit_isi_loop': None}
+        else:
+            return {'monit_isi_loop': 'done'}
 
+class ActionMonitIsiSubmit(Action):
+    def name(self) -> Text:
+        return "action_monit_isi_submit"
 
-        if tracker.slots.get("outdoor_seating") is True:
-            # If the user wants to sit outside, ask
-            # if they want to sit in the shade or in the sun.
-            additional_slots.append("shade_or_sun")
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        
+        if codeFound:
+            if qFound:
+                uname = tracker.sender_id
+                submit_time = dt.now().astimezone().replace(microsecond=0).isoformat()
 
-        return additional_slots + domain_slots
+                r = requests.post(url = 'http://localhost:8080/record', json = { 
+                    'user' : uname,
+                    'submit_time' : submit_time,
+                    'qs_code' : monit_kode_isi,
+                    'answers' : answers
+                })
+
+                if (r.status_code == 200):
+                    message = 'Record baru berhasil disimpan.'
+                else:
+                    message = 'Terjadi kesalahan pada server'
+            else:
+                message = 'Kode monitoring ' + monit_kode_isi + ' tidak memiliki pertanyaan.'
+        else:
+            message = 'Kode monitoring ' + monit_kode_isi + ' tidak ditemukan.'
+
+        dispatcher.utter_message(text=message)
+
+        return [AllSlotsReset()]    

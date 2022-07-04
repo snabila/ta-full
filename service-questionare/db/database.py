@@ -177,3 +177,10 @@ async def rec_code_uname(code, uname: str) -> dict:
     async for r in rs_collection.find({"qs_code": code, "user": uname}):
         rs.append(r_helper(r))
     return rs
+
+# Delete by code and username
+async def del_rec_code_uname(code, uname: str) -> dict:
+    rs = await rs_collection.find_one({"qs_code": code, "user": uname})
+    if rs:
+        await rs_collection.delete_many({"qs_code": code, "user": uname})
+        return True

@@ -1,0 +1,37 @@
+digraph  {
+0 [class="start active", fillcolor=green, fontsize=12, label=START, style=filled];
+"-1" [class=end, fillcolor=red, fontsize=12, label=END, style=filled];
+1 [class=active, fontsize=12, label=action_session_start];
+2 [class=active, fontsize=12, label=utter_greet];
+3 [class=active, fontsize=12, label=utter_monit];
+4 [class=active, fontsize=12, label=action_monit_list];
+5 [class=active, fontsize=12, label=monit_form];
+7 [class=active, fontsize=12, label=action_monit_isi];
+8 [class=active, fontsize=12, label=monit_isi_form];
+10 [class=active, fontsize=12, label=action_monit_isi_submit];
+11 [class=active, fontsize=12, label=utter_bantu_lagi];
+12 [class="intent dashed active", label="  ?  ", shape=rect];
+13 [class="intent active", fillcolor=lightblue, label="/greet", shape=rect, style=filled];
+14 [class="intent active", fillcolor=lightblue, label="/pilih_monitoring", shape=rect, style=filled];
+15 [class="intent active", fillcolor=lightblue, label="/monit_pilih_isi", shape=rect, style=filled];
+16 [class="intent active", fillcolor=lightblue, label="/pilih_disease_info", shape=rect, style=filled];
+17 [class="intent active", fillcolor=lightblue, label="/pilih_monitoring", shape=rect, style=filled];
+0 -> "-1"  [class="", key=NONE, label=""];
+0 -> 1  [class=active, key=NONE, label=""];
+1 -> 13  [class=active, key=0];
+2 -> 14  [class=active, key=0];
+3 -> 15  [class=active, key=0];
+4 -> 5  [class=active, key=NONE, label=""];
+5 -> 7  [class=active, key=NONE, label=""];
+5 -> 16  [class=active, key=0];
+7 -> 8  [class=active, key=NONE, label=""];
+8 -> 10  [class=active, key=NONE, label=""];
+8 -> 17  [class=active, key=0];
+10 -> 11  [class=active, key=NONE, label=""];
+11 -> 12  [class=active, key=NONE, label=""];
+13 -> 2  [class=active, key=0];
+14 -> 3  [class=active, key=0];
+15 -> 4  [class=active, key=0];
+16 -> 5  [class=active, key=0];
+17 -> 8  [class=active, key=0];
+}

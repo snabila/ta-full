@@ -112,11 +112,16 @@ rules:
       - action: action_monit_list
       - action: monit_form
       - active_loop: monit_form
-      - active_loop: monit_form
       - active_loop: null
       - slot_was_set:
           - requested_slot: null
       - action: action_monit_isi
+      - action: monit_isi_form
+      - active_loop: monit_isi_form
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: action_monit_isi_submit
       - action: utter_bantu_lagi
 
   # disease info

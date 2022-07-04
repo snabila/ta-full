@@ -96,7 +96,9 @@ actions:
   - action_monit_list
   - action_monit_hapus_act
   - action_monit_isi
-  - action_monit_isi_form
+  - action_ask_monit_isi_loop
+  - validate_monit_isi_form
+  - action_monit_isi_submit
   - action_disease_info
   - action_es_covid
   - action_opini_bantu

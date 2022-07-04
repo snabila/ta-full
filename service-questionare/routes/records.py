@@ -3,6 +3,7 @@ from fastapi.encoders import jsonable_encoder
 
 from db.database import (
     add_rec,
+    del_rec_code_uname,
     get_recs,
     rec_by_code,
     rec_code_uname
@@ -46,6 +47,19 @@ async def get_record_code_uname(code, uname):
     if records:
         return ResponseModel(records, "Records retrieved successfully")
     return ErrorResponseModel("An error occurred.", 404, "There are no records found")
+
+# Delete by code and username
+@router.delete("/code/{code}/{uname}", response_description="Records deleted from the database")
+async def del_record_code_uname(code, uname):
+    deleted_rs = await del_rec_code_uname(code, uname)
+    if deleted_rs:
+        return ResponseModel(
+            "All records removed",
+            "Records deleted successfully"
+        )
+    return ErrorResponseModel(
+        "An error occurred", 404, "No records found"
+    )
 
 # Get all records from a specific host
 # @router.get("/host/{uname}", response_description="Records retrieved")

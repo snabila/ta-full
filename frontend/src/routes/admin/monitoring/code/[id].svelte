@@ -5,7 +5,7 @@
 	import { pageName } from '../../../../stores/admin.js';
 
 	export let monit, recordN
-	// console.log(monit.participants)
+	console.log(monit.participants)
 
 	onMount(() => {
 		pageName.update(() => document.title);
@@ -322,7 +322,7 @@
 								</span>
 							</button>
 						{/each}
-					{:else}
+					{:else if monit.participants.length > 0 && monit.participants.length <= 5}
 						{#each monit.participants as patient}
 							<div class="flex justify-between items-center mt-4">
 								<a href="/admin/pasien/{ patient }" class="font-semibold">{ patient }</a>
@@ -342,6 +342,10 @@
 								</svg>
 							</div>
 						{/each}
+					{:else}
+						<div class="text-center italic text-violet-600 bg-violet-100 py-2 px-1 mt-4 w-full rounded-md">
+							<p>Belum ada pasien yang terdaftar pada monitoring ini.</p>
+						</div>
 					{/if}
 				{:else}
 					<div class="text-center italic text-violet-600 bg-violet-100 py-2 px-1 mt-4 w-full rounded-md">
