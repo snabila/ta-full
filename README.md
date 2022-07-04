@@ -1,30 +1,4 @@
-# Just some thesis stuffs
-
-## Changelog
-
-**Jun 3, 2022**
-
-- Git init
-- New monitoring form page (front end only)
-
-**Jun 5, 2022**
-
-- Frontend kurang lebih udah semua, kurang chart aja
-- Mulai search service
-
-**Jun 7, 2022**
-
-- Search service API udah
-- Problem : nggak ada web yang konsisten struktur htmlnya, jadinya kadang nggak ngasih hasil
-
-**Jun 10, 2022**
-
-- Konsep search service ganti : awalnya di scrape dari sumber web terus hasilnya disimpan di database, scrapernya nggak usah dibikinin API, ke hasil database nya aja
-- Program scrapernya udah
-
-**Jun 11, 2022**
-
-- Database & API disease info udah
+# Final year project stuffs
 
 ## Services
 
@@ -34,12 +8,7 @@ Made with svelte, frontend buat web. Ada di port 3000
 
 ### API Gateway
 
-Yang masih problem:
-
-    user service - /api/host-add
-    user-service - /api/host-pull
-    user-service - /api/subs-add
-    user-service - /api/subs-pull
+CORS masih error, tapi ada kemungkinan karena pake localhost
 
 ### Chatbot
 
