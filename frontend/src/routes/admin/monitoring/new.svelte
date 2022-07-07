@@ -98,7 +98,7 @@
 <!-- <svelte:window on:beforeunload={beforeUnload} /> -->
 
 <div in:fade|local={{delay: 500, duration: 500}} out:fade|local={{duration: 500}}>
-	<form on:submit|preventDefault={submit}>
+	<form on:submit|preventDefault={submit} class="pb-12">
 	<!-- Upper section -->
 	<div class="grid gap-6 mb-8 md:grid-cols-3 xl:grid-cols-3">
 		<!-- Left : Details -->

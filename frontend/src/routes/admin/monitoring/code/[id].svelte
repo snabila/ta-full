@@ -195,10 +195,9 @@
 						</div>
 						<div class="grid grid-cols-3 mb-4">
 							<p class="font-semibold">Tipe Jawaban</p>
-							{#if question.answer_type == 1}
+							{#if question.answer_type == 'str'}
 								<p class="col-span-2 ml-2">Teks Pendek</p>
-							{:else if question.answer_type == 2} <p class="col-span-2 ml-2">Numerik</p>
-							{:else} <p class="col-span-2 ml-2">Yes/No</p>
+							{:else if question.answer_type == 'int'} <p class="col-span-2 ml-2">Numerik</p>
 							{/if}
 							
 						</div>
@@ -285,7 +284,7 @@
 
 				<!-- List pasien -->
 				{#if monit.participants}
-					{#if monit.participants.length > 5}
+					<!-- {#if monit.participants.length > 5}
 						{#each {length: 4} as _, i}
 							<div class="flex justify-between items-center mt-4">
 								<a href="/admin/pasien/{ monit.participants[i] }" class="font-semibold">{ monit.participants[i] }</a>
@@ -304,25 +303,25 @@
 									/>
 								</svg>
 							</div>
-							<button class="mt-6 flex items-center justify-center w-full text-purple-600">
-								View All
-								<span>
-									<svg
-										xmlns="http://www.w3.org/2000/svg"
-										class="h-5 w-5 ml-2"
-										viewBox="0 0 20 20"
-										fill="currentColor"
-									>
-										<path
-											fill-rule="evenodd"
-											d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-											clip-rule="evenodd"
-										/>
-									</svg>
-								</span>
-							</button>
 						{/each}
-					{:else if monit.participants.length > 0 && monit.participants.length <= 5}
+						<button class="mt-6 flex items-center justify-center w-full text-purple-600">
+							View All
+							<span>
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									class="h-5 w-5 ml-2"
+									viewBox="0 0 20 20"
+									fill="currentColor"
+								>
+									<path
+										fill-rule="evenodd"
+										d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+										clip-rule="evenodd"
+									/>
+								</svg>
+							</span>
+						</button> -->
+					{#if monit.participants.length > 0}
 						{#each monit.participants as patient}
 							<div class="flex justify-between items-center mt-4">
 								<a href="/admin/pasien/{ patient }" class="font-semibold">{ patient }</a>

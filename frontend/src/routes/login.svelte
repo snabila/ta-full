@@ -3,6 +3,7 @@
     import { goto } from '$app/navigation';
     import { fade } from 'svelte/transition';
     import { ScaleOut } from 'svelte-loading-spinners'
+    import { messageStore } from '../stores/chat'
     let username = '', password = ''
     let error
 
@@ -25,6 +26,7 @@
         })
         
         if (result.status == 200) {
+          messageStore.set([])
           await goto('/')
         } else {
           error = await result.json()

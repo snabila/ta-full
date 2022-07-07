@@ -87,14 +87,15 @@ async def push_participant(code: str, uname: str):
     q = await qs_collection.find_one({"code": code})
     if q:
         newParticipant = q_helper(q)['participants']
+        # print(newParticipant)
         if newParticipant:
-            if uname in newParticipant:
+            if uname not in newParticipant:
                 newParticipant.append(uname)
             else:
                 return False
         else :
             newParticipant = [uname]
-
+        # print(newParticipant)
         updated_q = await qs_collection.update_one(
             {"code": code}, {"$set": {"participants": newParticipant}}
         )

@@ -64,6 +64,7 @@ async def add_new_participant(code: str, newParticipant: PushParticipant):
             "Participant {} added successfully".format(newParticipant.username),
             "Questionare updated successfully",
         )
+    # print(updated_q)
     return ErrorResponseModel(
         "An error occurred",
         404,

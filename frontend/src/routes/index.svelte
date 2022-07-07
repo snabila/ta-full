@@ -68,6 +68,7 @@
 			headers: {'Content-Type': 'application/json'},
 			credentials: 'include',
 		})
+		messageStore.set([])
 		auth = false
 		await goto('/login')
 	}

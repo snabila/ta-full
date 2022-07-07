@@ -72,9 +72,8 @@
 			class="block mt-1 text-sm border rounded-md bg-white dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none dark:text-gray-300 form-input py-2 px-2"
 			bind:value={objAttributes.answer_type}
 		>
-			<option value="1">Teks pendek</option>
-			<option value="2">Numerik</option>
-			<option value="3">Yes/No</option>
+			<option value="str">Teks pendek</option>
+			<option value="int">Numerik</option>
 		</select>
 	</div>
 

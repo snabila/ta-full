@@ -27,7 +27,7 @@ class ActionMonitDaftar(Action):
 
         r = requests.get(url = 'http://localhost:8080/monit/code/' + monit_kode)
 
-        if r.status_code == 200 :
+        if r.json()['code'] == 200 :
             r = requests.put(url = 'http://localhost:8003/api/subs-add', json = { 'code' : monit_kode, 'uname' : uname })
             r2 = requests.put(url = 'http://localhost:8080/monit/code/' + monit_kode + '/push', json = { 'username' : uname })
 

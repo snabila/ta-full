@@ -4,8 +4,7 @@
 !.env.example
 
 # Database
-/service-questionare-db
-/service-user-db
+/service-*-db
 .db
 
 # Node

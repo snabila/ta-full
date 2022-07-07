@@ -2,6 +2,7 @@
 	import { pageName, sideMenuOpen } from '../../stores/admin.js';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
+	import { messageStore } from '../../stores/chat'
 
 	let show = false; // menu state
 	let menu = null; // menu wrapper DOM reference
@@ -49,6 +50,7 @@
 			credentials: 'include',
 		})
 		// auth = false
+		messageStore.set([])
 		await goto('/login')
 	}
 

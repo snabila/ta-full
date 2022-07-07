@@ -14,6 +14,14 @@
       }, 2000);
     });
 
+    const UNAME_ALLOWED_CHARS_REGEXP = /[a-z0-9]+/;
+
+    const unameKeyPress = e => {
+      if (!UNAME_ALLOWED_CHARS_REGEXP.test(e.key)) {
+        e.preventDefault()
+      };
+    };
+
     const submit = async () => {
         const result = await fetch('http://localhost:8080/auth/signup', {
             method: 'POST',
@@ -83,7 +91,24 @@
         </div>
         <div>
           <label for="username" class="sr-only">Username</label>
-          <input bind:value={username} class="mt-4 relative block w-full text-sm px-3 py-2 border rounded-md border-gray-200 placeholder-gray-500 text-gray-900 focus:ring-purple-500 focus:border-purple-500 focus:outline-none form-input focus:z-10" placeholder="Username" type="text" required>
+          <input bind:value={username} on:keypress={unameKeyPress} class="mt-4 relative block w-full text-sm px-3 py-2 mb-1 border rounded-md border-gray-200 placeholder-gray-500 text-gray-900 focus:ring-purple-500 focus:border-purple-500 focus:outline-none form-input focus:z-10" placeholder="Username" type="text" required>
+          <div class="text-gray-600 italic">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-3 w-3 ml-1 inline"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <span class="text-xs">Hanya diperbolehkan huruf kecil dan angka</span>
+          </div>
         </div>
         <div>
           <label for="email" class="sr-only">Email</label>
@@ -91,7 +116,25 @@
         </div>
         <div>
           <label for="password" class="sr-only">Password</label>
-          <input bind:value={password} class="mt-4 relative block w-full text-sm px-3 py-2 border rounded-md border-gray-200 placeholder-gray-500 text-gray-900 focus:ring-purple-500 focus:border-purple-500 focus:outline-none form-input focus:z-10" placeholder="Password" type="password" required>
+          <input bind:value={password} class="mt-4 relative block w-full text-sm px-3 py-2 border rounded-md border-gray-200 placeholder-gray-500 text-gray-900 focus:ring-purple-500 focus:border-purple-500 focus:outline-none form-input focus:z-10" placeholder="Password" type="password" required
+          minlength="8">
+          <div class="text-gray-600 italic">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-3 w-3 ml-1 inline"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <span class="text-xs">Minimum 8 karakter</span>
+          </div>
         </div>
         <div>
           <label class="mt-4 text-sm block" for="role" >Daftar sebagai</label>
