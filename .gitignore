@@ -6,6 +6,7 @@
 # Database
 /service-*-db
 .db
+!diseaseinfo.db
 
 # Node
 node_modules
