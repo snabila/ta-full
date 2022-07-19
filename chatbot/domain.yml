@@ -109,6 +109,10 @@ forms:
     required_slots:
       - monit_kode
 
+  monit_form_2:
+    required_slots:
+      - monit_kode_2
+
   monit_isi_form:
     required_slots:
       - monit_isi_loop
@@ -132,10 +136,6 @@ forms:
     required_slots:
       - opini_bantu
 
-  # apakah_bantu_form:
-  #   required_slots:
-  #     - bantu_lagi
-
 slots:
   monit_kode:
     type: text
@@ -145,6 +145,15 @@ slots:
         conditions:
           - active_loop: monit_form
             requested_slot: monit_kode
+
+  monit_kode_2:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: monit_form_2
+            requested_slot: monit_kode_2
 
   monit_isi_loop:
     type: text
@@ -244,15 +253,6 @@ slots:
         conditions:
           - active_loop: apakah_membantu_form
             requested_slot: opini_bantu
-
-  # bantu_lagi:
-  #   type: text
-  #   influence_conversation: true
-  #   mappings:
-  #     - type: from_text
-  #       conditions:
-  #         - active_loop: apakah_bantu_form
-  #           requested_slot: bantu_lagi
 
 session_config:
   session_expiration_time: 60

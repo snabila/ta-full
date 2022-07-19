@@ -25,6 +25,15 @@ Framework, tools, library yang digunain diantaranya:
 6. [SvelteKit](https://kit.svelte.dev/). Frontend web framework, waktu itu dipakai karena saya nggak sanggup speedrun belajar React.
 7. [Tailwind](https://tailwindcss.com/). Framework CSS.
 
+### To Do List
+
+- [ ] Cari cara cancel/skip form Rasa dari custom action atau validasi slot
+- [ ] Error handling
+  - [ ] Pilih isi form tapi belum terdaftar di kode tsb
+  - [ ] Pilih isi form tapi belum terdaftar di manapun
+  - [x] Pilih hapus form tapi belum terdaftar di kode tsb
+  - [ ] Pilih hapus form tapi belum terdaftar di manapun
+
 ## Services
 
 Buat run semuanya bisa
@@ -37,17 +46,17 @@ tamahin flag `-d` kalau nggak mau lihat log.
 
 Proses autentikasi masih banyak yang di proses di frontendnya, which I think can be moved to gateway, tapi nggak sempet kemaren. Struktur website nya kurang lebih gini
 
-    |--Homepage (chatbot)          - All roles
-    |--Admin                       - Dokter
-        |--Dashboard
-        |--Monitoring
-        |   |--Index
-        |   |--Individual
-        |   |--New & Edit
-        |--Pasien
-        |   |--Index
-        |   |--Individual
-        |--Respon
+    ├──Homepage (chatbot)          - All roles
+    └──Admin                       - Dokter
+        ├──Dashboard
+        ├──Monitoring
+        │   ├──Index
+        │   ├──Individual
+        │   └──New & Edit
+        ├──Pasien
+        │   ├──Index
+        |   └──Individual
+        └──Respon
 
 Halaman respon cuma buat liat indeks respon terbaru aja, buat detail responnya sendiri diliat di halaman masing-masing pasien.
 
@@ -73,6 +82,12 @@ Buat jalanin actions server:
     rasa run actions
 
 Alur percakapannya masih kaku banget and prone to errors kalau keluar dari alur. Forms yang udah dibuat sebenernya perlu diperbaikin lagi tapi kemarin nggak sempet.
+
+Error handling nya masih jelek, terutama di fungsi monitoring:
+
+1. Kalau user pilih isi tapi belum terdaftar ke manapun >> dia bakal ngulang 'belum terdaftar' dua kali, stuck di `monit_form_2` dan `monit_isi_form`
+2. Kalau user pilih isi tapi belum terdaftar di kode tsb >> stuck di nunggu input `monit_isi_loop`, harus ada input lagi dulu baru dia nanya `utter_bantu_lagi`
+3. Kalau user pilih hapus tapi belum terdaftar ke manapun >> stuck di nunggu input `monit_form_2`
 
 ### Monitoring
 

@@ -111,8 +111,8 @@ stories:
       - action: utter_monit
       - intent: monit_pilih_isi
       - action: action_monit_list
-      - action: monit_form
-      - active_loop: monit_form
+      - action: monit_form_2
+      - active_loop: monit_form_2
       - active_loop: null
       - slot_was_set:
           - requested_slot: null
@@ -133,8 +133,8 @@ stories:
       - action: utter_monit
       - intent: monit_pilih_isi
       - action: action_monit_list
-      - action: monit_form
-      - active_loop: monit_form
+      - action: monit_form_2
+      - active_loop: monit_form_2
       - active_loop: null
       - slot_was_set:
           - requested_slot: null
@@ -187,8 +187,8 @@ stories:
       - action: utter_monit
       - intent: monit_pilih_hapus
       - action: action_monit_list
-      - action: monit_form
-      - active_loop: monit_form
+      - action: monit_form_2
+      - active_loop: monit_form_2
       - active_loop: null
       - slot_was_set:
           - requested_slot: null
@@ -203,8 +203,8 @@ stories:
       - action: utter_monit
       - intent: monit_pilih_hapus
       - action: action_monit_list
-      - action: monit_form
-      - active_loop: monit_form
+      - action: monit_form_2
+      - active_loop: monit_form_2
       - active_loop: null
       - slot_was_set:
           - requested_slot: null
