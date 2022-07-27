@@ -32,39 +32,12 @@
 				</a>
 			</div>
 		</div>
-		<!-- Search Input -->
-		<!-- <div class="relative px-6 py-3">
-			<div class="relative w-full max-w-xl mr-6 focus-within:text-purple-500">
-				<div class="absolute inset-y-0 flex items-center pl-2">
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						class="h-4 w-4"
-						fill="none"
-						viewBox="0 0 24 24"
-						stroke="currentColor"
-						stroke-width="2"
-					>
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-						/>
-					</svg>
-				</div>
-				<input
-					class="w-full py-3 pl-8 pr-2 text-sm text-gray-700 placeholder-gray-600 bg-gray-100 border-0 rounded-md dark:placeholder-gray-500 dark:focus:shadow-outline-gray dark:focus:placeholder-gray-600 dark:bg-gray-700 dark:text-gray-200 focus:placeholder-gray-500 focus:bg-white focus:border-purple-300 focus:outline-none focus:shadow-outline-purple form-input"
-					type="text"
-					placeholder="Search..."
-					aria-label="Search"
-				/>
-			</div>
-		</div> -->
-
+		<!-- Links -->
 		<ul class="mt-6">
 			<li class="relative px-6 py-3">
 				<a
 					class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-					href="/admin"
+					href="/dokter"
 				>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
@@ -86,7 +59,7 @@
 			<li class="relative px-6 py-3">
 				<a
 					class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-					href="/admin/pasien"
+					href="/dokter/pasien"
 				>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
@@ -108,7 +81,7 @@
 			<li class="relative px-6 py-3">
 				<a
 					class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-					href="/admin/monitoring"
+					href="/dokter/monitoring"
 				>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
@@ -130,7 +103,7 @@
 			<li class="relative px-6 py-3">
 				<a
 					class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-					href="/admin/responds"
+					href="/dokter/responds"
 				>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
@@ -153,7 +126,7 @@
 		<div class="px-6 my-6">
 			<a
 				class="flex items-center justify-between w-full px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
-				href="/admin/monitoring/new"
+				href="/dokter/monitoring/new"
 			>
 				Form Monitoring Baru
 				<span class="ml-2" aria-hidden="true">+</span>
@@ -212,39 +185,12 @@
 				</a>
 			</div>
 		</div>
-		<!-- Search Input -->
-		<!-- <div class="relative px-6 py-3">
-			<div class="relative w-full max-w-xl mr-6 focus-within:text-purple-500">
-				<div class="absolute inset-y-0 flex items-center pl-2">
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						class="h-4 w-4"
-						fill="none"
-						viewBox="0 0 24 24"
-						stroke="currentColor"
-						stroke-width="2"
-					>
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-						/>
-					</svg>
-				</div>
-				<input
-					class="w-full py-3 pl-8 pr-2 text-sm text-gray-700 placeholder-gray-600 bg-gray-100 border-0 rounded-md dark:placeholder-gray-500 dark:focus:shadow-outline-gray dark:focus:placeholder-gray-600 dark:bg-gray-700 dark:text-gray-200 focus:placeholder-gray-500 focus:bg-white focus:border-purple-300 focus:outline-none focus:shadow-outline-purple form-input"
-					type="text"
-					placeholder="Search..."
-					aria-label="Search"
-				/>
-			</div>
-		</div> -->
-
+		<!-- Links -->
 		<ul class="mt-6">
 			<li class="relative px-6 py-3">
 				<a
 					class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-					href="/admin" on:click={ mobileMenuOpen }
+					href="/dokter" on:click={ mobileMenuOpen }
 				>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
@@ -266,7 +212,7 @@
 			<li class="relative px-6 py-3">
 				<a
 					class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-					href="/admin/pasien" on:click={ mobileMenuOpen }
+					href="/dokter/pasien" on:click={ mobileMenuOpen }
 				>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
@@ -288,7 +234,7 @@
 			<li class="relative px-6 py-3">
 				<a
 					class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-					href="/admin/monitoring" on:click={ mobileMenuOpen }
+					href="/dokter/monitoring" on:click={ mobileMenuOpen }
 				>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
@@ -310,7 +256,7 @@
 			<li class="relative px-6 py-3">
 				<a
 					class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-					href="/admin/responds" on:click={ mobileMenuOpen }
+					href="/dokter/responds" on:click={ mobileMenuOpen }
 				>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
@@ -333,7 +279,7 @@
 		<div class="px-6 my-6">
 			<a
 				class="flex items-center justify-between w-full px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
-				href="/admin/monitoring/new"
+				href="/dokter/monitoring/new"
 				on:click={ mobileMenuOpen }
 			>
 				Form Monitoring Baru

@@ -22,25 +22,12 @@
 		// console.log(data.value)
 		
 		if (response.status == 200) {
-			if (data.role === 'dokter'){
-				let hosting = data.hosting
-				let recordList = []
-
-				for (let i = 0; i < hosting.length; i++) {
-					const records = await fetch('http://localhost:8080/record/code/' + hosting[i])
-					const temp2 = await records.json()
-
-					// cek kode monitong punya record atau ngga
-					if (temp2.code == 200) {
-						// const record = temp2.data[0].
-						recordList = recordList.concat(temp2.data[0])
-						// recordN = temp2.data[0].length
-					}
-
-					// recordList.push({ monit: item, recordN: recordN})
-				}
-				if (recordList) {
-					recordList.sort(function(a,b) {
+			if (data.role === 'admin'){
+				const records = await fetch('http://localhost:8080/record/')
+				let recordList = await records.json()
+				
+				if (recordList.data[0]) {
+					recordList.data[0].sort(function(a,b) {
 						const keyA = new Date(a.submit_time), keyB = new Date(b.submit_time);
 						if (keyA > keyB) return -1;
 						if (keyA < keyB) return 1;
@@ -49,7 +36,12 @@
 				}
 				// console.log(recordList)
 				return {
-					props: { recordList: recordList }
+					props: { recordList: recordList.data[0] }
+				}
+			} else if (data.role === 'dokter'){
+				return {
+					status: 302,
+					redirect: '/dokter'
 				}
 			} else {
 				return {
@@ -89,7 +81,7 @@
 						{#each recordList as record}
 						<tr class="text-gray-700 dark:text-gray-400">
 							<td class="px-4 py-3 text-sm"><a href="/admin/pasien/{ record.user }"><p class="font-semibold">{ record.user }</p></a></td>
-							<td class="px-4 py-3 text-sm">{ record.qs_code }</td>
+							<td class="px-4 py-3 text-sm"><a href="/admin/monitoring/{ record.qs_code }">{ record.qs_code }</a></td>
 							<td class="px-4 py-3 text-sm">{ parseDate(record.submit_time) }</td>
 						</tr>
 						{/each}
@@ -98,6 +90,6 @@
 			</div>
 		</div>
 	{:else}
-		<NoEntry title='No entries' message='Monitoring anda belum memiliki respon, undang pasien anda dengan membagikan kode monitoring anda'/>
+		<NoEntry title='No entries' message='Belum ada respon yang tersimpan'/>
 	{/if}
 </div>

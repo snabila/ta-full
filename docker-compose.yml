@@ -1,5 +1,16 @@
 version: "3.8"
 services:
+  tunnel:
+    image: shkoliar/ngrok
+    ports:
+      - 4551:4551
+    links:
+      - frontend
+    environment:
+      - AUTH_TOKEN=${NGROK_AUTH}
+      - DOMAIN=frontend
+      - PORT=3000
+
   frontend:
     restart: on-failure
     build:
@@ -9,6 +20,8 @@ services:
     ports:
       - 3000:3000
       - 24678:24678
+    expose:
+      - "3000"
     environment:
       NODE_ENV: development
 

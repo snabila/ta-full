@@ -195,6 +195,8 @@ class ActionMonitIsi(Action):
                 else:
                     codeFound = False
                     qFound = False
+            else:
+                subsFound = False
 
         return [AllSlotsReset()]
 

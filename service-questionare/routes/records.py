@@ -1,12 +1,17 @@
-from fastapi import APIRouter, Body
+from urllib import response
+from fastapi import APIRouter, Body, Response
 from fastapi.encoders import jsonable_encoder
+from fastapi.responses import StreamingResponse
+import pandas as pd
+import csv
 
 from db.database import (
     add_rec,
     del_rec_code_uname,
     get_recs,
     rec_by_code,
-    rec_code_uname
+    rec_code_uname,
+    retrieve_qus
 )
 
 from db.models import (
@@ -40,6 +45,39 @@ async def get_record_code(code):
         return ResponseModel(records, "Records retrieved successfully")
     return ErrorResponseModel("An error occurred.", 404, "There are no records for monitoring code {}".format(code))
 
+# Dowload all code records in csv
+@router.get("/code/{code}/csv")
+async def dl_record_code(code):
+    records = await rec_by_code(code)
+    questions = await retrieve_qus(code)
+
+    if records:
+        flattened_records = []
+        for record in records:
+            # record_id = record['_id']
+            record_user = record['user']
+            record_qs = record['qs_code']
+            record_time = record['submit_time']
+
+            flattened_record = {
+                # '_id': record_id,
+                'submit_time': record_time,
+                'username': record_user,
+                'monitoring_code': record_qs        
+            }
+
+            for answer in record['answers']:
+                for question in questions:
+                    if question['id'] == answer['q_id']:
+
+                        flattened_record[question['label']] = answer['answer']
+            
+            flattened_records.append(flattened_record)
+        
+        df = pd.DataFrame(data = flattened_records)
+
+        return Response(content=df.to_csv(), media_type="text/csv")
+
 # Filter by code and username
 @router.get("/code/{code}/{uname}", response_description="Records retrieved")
 async def get_record_code_uname(code, uname):
@@ -47,6 +85,39 @@ async def get_record_code_uname(code, uname):
     if records:
         return ResponseModel(records, "Records retrieved successfully")
     return ErrorResponseModel("An error occurred.", 404, "There are no records found")
+
+# Export as csv by code and username
+# Dowload all code records in csv
+@router.get("/code/{code}/{uname}/csv")
+async def dl_record_code_uname(code, uname):
+    records = await rec_code_uname(code, uname)
+    questions = await retrieve_qus(code)
+
+    if records:
+        flattened_records = []
+        for record in records:
+            # record_id = record['_id']
+            record_user = record['user']
+            record_qs = record['qs_code']
+            record_time = record['submit_time']
+
+            flattened_record = {
+                # '_id': record_id,
+                'submit_time': record_time,
+                'username': record_user,
+                'monitoring_code': record_qs        
+            }
+
+            for answer in record['answers']:
+                for question in questions:
+                    if question['id'] == answer['q_id']:
+                        flattened_record[question['label']] = answer['answer']
+            
+            flattened_records.append(flattened_record)
+        
+        df = pd.DataFrame(data = flattened_records)
+
+        return Response(content=df.to_csv(), media_type="text/csv")
 
 # Delete by code and username
 @router.delete("/code/{code}/{uname}", response_description="Records deleted from the database")

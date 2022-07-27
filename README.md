@@ -27,6 +27,11 @@ Framework, tools, library yang digunain diantaranya:
 
 ### To Do List
 
+- Kayanya hampir semua API yang baru dibuat setelah revisi langsung nembak ke servicenya, ga lewat gateway dulu
+- Plus juga ga kumasukin ke buku ta karena pusing
+
+### To Do List
+
 - [ ] Cari cara cancel/skip form Rasa dari custom action atau validasi slot
 - [ ] Error handling
   - [ ] Pilih isi form tapi belum terdaftar di kode tsb
@@ -70,6 +75,15 @@ Catatan untuk penggunaan KrakenD:
 - Designer GUI nya agak membingungkan pertama kali liatnya, perlu sholat tobat dulu biar diarahin ke settings yang diinginkan wkwk
 
 Alternatif lainnya ada [Tyk](https://tyk.io/) dan [Kong](https://konghq.com/), komunitas mereka lebih besar, jadi lebih banyak resource buat belajarnya. Bisa diubah aja gateway nya kalau mau.
+
+### User
+
+API nya berantakan banget, tapi kepepet waktu revisi mohon maaf wkwkw.
+
+Kalo mau buka mongoshell, cari nama container database pakai `docker ps`, terus kasih command ini, nilai username password dan port disesuaikan
+
+    docker exec -i -t CONTAINERNAME bash
+    mongo -u "username" -p "password" --port PORT
 
 ### Chatbot
 

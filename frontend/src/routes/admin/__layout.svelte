@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
 	import { ScaleOut } from 'svelte-loading-spinners'
-	import Sidebar from '../../components/admin/sidebar.svelte';
+	import Sidebar from '../../components/admin/sidebarAdmin.svelte';
 	import Header from '../../components/admin/header.svelte';
 	import {page} from '$app/stores'
 
@@ -25,7 +25,7 @@
 	<div class="flex flex-col flex-1 w-full">
 		<Header />
 		<main class="h-full overflow-y-auto">
-			<div class="container px-6 mx-auto grid" >
+			<div class="container px-6 mx-auto grid pb-20" >
 				<!-- {#key page}
 				<div in:fade|local={{delay: 500, duration: 500}} out:fade|local={{duration: 500}}> -->
 				<slot />

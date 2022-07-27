@@ -18,12 +18,15 @@ router.post("/signup", async (req, res) => {
     if (find)
       return res.status(400).send({ message: "Username already registered." });
 
+    let createdDate = Date.now();
+
     const user = new User({
       name: req.body.name,
       email: req.body.email,
       username: req.body.username,
       password: req.body.password,
       role: req.body.role,
+      createdDate: Date.now(),
     });
 
     const result = await user.save();
@@ -50,6 +53,11 @@ router.post("/login", async (req, res) => {
       message: "Invalid password",
     });
   }
+
+  const updatedLogin = await User.findOneAndUpdate(
+    { username: req.body.username },
+    { $set: { lastLoginDate: Date.now() } }
+  );
 
   const token = jwt.sign(
     { _id: user._id, username: user.username, role: user.role },
@@ -125,6 +133,41 @@ router.post("/logout", (req, res) => {
   res.cookie("jwt", "", { maxAge: 0 });
 
   res.send();
+});
+
+// get useres (for admin role)
+router.get("/users", async (req, res) => {
+  let data;
+  if (req.query.role) {
+    const users = await User.find(
+      { role: req.query.role },
+      { username: 1, role: 1, hosting: 1, subscribed: 1, lastLoginDate: 1 }
+    );
+
+    if (!users) {
+      return res.status(404).send({
+        message: "users not found",
+      });
+    }
+
+    const data = await users;
+    res.send(data);
+  } else {
+    const users = await User.find(
+      {},
+      { username: 1, role: 1, hosting: 1, subscribed: 1, lastLoginDate: 1 }
+    );
+
+    if (!users) {
+      return res.status(404).send({
+        message: "users not found",
+      });
+    }
+
+    const data = await users;
+    res.send(data);
+  }
+  res.send(data);
 });
 
 // add hosted monitoring

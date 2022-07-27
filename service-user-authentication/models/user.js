@@ -26,6 +26,14 @@ const UserSchema = new mongoose.Schema({
   },
   hosting: [String],
   subscribed: [String],
+  createdDate: {
+    type: Date,
+    default: Date.now,
+  },
+  lastLoginDate: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 UserSchema.pre("save", async function (next) {
@@ -40,5 +48,13 @@ UserSchema.methods.isValidPassword = async function (input, hash) {
 
   return compare;
 };
+
+// UserSchema.methods.updateLoginDate = async function login(callback) {
+//   const user = this;
+
+//   return user.findByIdAndUpdate(this._id, {
+//     $set: { lastLoginDate: Date.now() },
+//   });
+// };
 
 module.exports = mongoose.model("User", UserSchema);

@@ -23,9 +23,17 @@ nlu:
       - selamat pagi
       - selamat siang
       - selamat sore
+      - selamat malam
       - selamatpagi
       - selamatsiang
       - selamatsore
+      - selamatmalam
+      - permisi
+      - misi
+      - woy
+      - whats up
+      - punten
+      - sampurasun
 
   - intent: goodbye
     examples: |

@@ -76,7 +76,7 @@
 
 <script context="module">
 	export async function load({ fetch }) {
-		const response = await fetch('http://localhost:8080/auth/user', {
+		const response = await fetch('http://localhost:8003/api/user', {
 			method: 'GET',
 			headers: {'Content-Type': 'application/json'},
 			credentials: 'include',
@@ -120,7 +120,8 @@
 			{/if}
 			<div class="w-max inline-block">
 				{#if auth}
-					{#if authUser.role == 'dokter'}<a href="/admin" class="text-purple-600">Admin</a>{/if}
+					{#if authUser.role == 'dokter'}<a href="/dokter" class="text-purple-600">Admin</a>{/if}
+					{#if authUser.role == 'admin'}<a href="/admin" class="text-purple-600">Admin</a>{/if}
 					<button on:click={logout} class="ml-2 text-purple-600">Logout</button>
 				{:else}
 					<a href="/login" class="text-purple-600">Login</a>
